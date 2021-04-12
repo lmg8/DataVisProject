@@ -1,6 +1,7 @@
 ---
-title: ""
+title: "ClimateChangers"
 output: html_document
+
 knit: (function(input_file, encoding) {
   out_dir <- 'docs';
   rmarkdown::render(input_file,
@@ -9,7 +10,10 @@ knit: (function(input_file, encoding) {
 ---
 
 <style type="text/css">
-h1.title {
+.title{
+    display: none;
+}
+h1.page-title {
 font-family: Impact, Charcoal, sans-serif;
 font-size: 140px;
 color: #7acdf1;
@@ -93,8 +97,8 @@ knitr::opts_chunk$set(fig.width=3, fig.height=3, echo = FALSE, warning=FALSE, me
 ```
 <div class="container main-container bg-darkblue">
   <div class="col-lg-8">
-  <h1 class="title">Climate Change - Who Cares?</h1>
-  <h3 class="title author">By: The Climate Changers</h3>
+  <h1 class="page-title">Climate Change - Who Cares?</h1>
+  <h3 class="page-title author">By: The Climate Changers</h3>
   </div>
   <div class="col-lg-4">
   <img class="earth" src="images/sadearth.svg">
