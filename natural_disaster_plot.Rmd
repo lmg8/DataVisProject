@@ -1,0 +1,401 @@
+---
+title: "natural_disaster_plot"
+author: "Lucia Guintu"
+date: "4/10/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r libraries, message=FALSE, warning=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(dplyr)
+library(viridis)
+library(plotly)
+library(RColorBrewer)
+library(colorRamps)
+
+```
+
+```{r}
+
+nd<-read.csv("data/emdat_naturald_clean.csv")
+transport<-read.csv("data/transportation.csv")
+```
+
+```{r}
+nd<-nd %>% 
+  group_by(Year,Disaster.Type,.drop = FALSE) %>% 
+  summarise(total=n())
+```
+```{r}
+Year<-unique(nd$Year)
+DisasterType<-unique(nd$Disaster.Type)
+all<-crossing(Year, DisasterType)
+
+nd<-left_join(all,nd,by=c("Year"="Year","DisasterType"="Disaster.Type"))
+nd[is.na(nd)]<-0
+```
+
+```{r}
+nb.cols <- 11
+
+
+mycolors <- colorRampPalette(brewer.pal(10, "Paired"))(nb.cols)
+
+col_theme<-c('#661F2F','#EF476F','#F78C6B','#FFD166','#83D483','#06D6A0','#0CB0A9','#118AB2','#073B4C','#739099')
+
+col_convert<-colorRampPalette(col_theme)(11)
+
+p <- nd %>% 
+  ggplot( aes(x=Year, y=total, fill=DisasterType,group=DisasterType, text =paste(DisasterType,':', total, "reported in", Year))) +
+    geom_area(aes(fill = DisasterType)) +
+    scale_fill_manual(values = col_convert) +
+    ggtitle("The global number of natural disasters is increasing every decade") +
+    theme_minimal()+
+    theme(axis.title.y = element_blank(),legend.title = element_blank(),rect = element_rect(fill = "transparent"),
+    panel.background = element_rect(fill = "transparent",colour = NA), # or theme_blank()
+    plot.background = element_rect(fill = "transparent",colour = NA))
+ggplotly(p,tooltip = "text") %>% 
+  layout(hovermode='x')
+#htmlwidgets::saveWidget(ggplotly(p,tooltip = "text"),"naturaldisaster.html")
+```
+
+```{r message=FALSE, warning=FALSE}
+# Load required R packages
+library(highcharter) 
+# Set highcharter options
+options(highcharter.theme = hc_theme_merge(hc_theme_gridlight(tooltip = list(valueDecimals = 0)),
+  hc_theme(
+     chart = list(backgroundColor="transparent"),
+     title = list(style = list(fontSize = "25px"))
+    )
+  )
+)
+# options(highcharter.theme=hc_theme_darkunica(tooltip = list(valueDecimals = 0)))
+```
+
+
+```{r}
+hc <- nd %>% 
+  hchart(
+    'area', hcaes(x = 'Year', y = 'total', group = 'DisasterType'),
+    stacking = "normal"
+    ) %>%
+  hc_plotOptions(series=list(marker=list(enabled=FALSE))) %>% 
+  hc_colors(col_theme) %>% 
+  hc_title(
+    text = "The global number of natural disasters are increasing every decade.") %>% 
+  hc_credits(
+    enabled = TRUE, 
+    text = "Source: EM-DAT, CRED / UCLouvain, Brussels, Belgium – www.emdat.be ( D. Guha-Sapir)",
+    style = list(color="white"),
+    href = "https://www.emdat.be"
+  )%>%   hc_legend(title=list(text='<span style="font-size: 9px; color: #666; font-weight: normal">(Click to hide; ctrl-click/command-click to filter/show all;)</span>')) %>% 
+  hc_plotOptions(
+  series = list( 
+    events = list(
+      legendItemClick = JS("function(e) {
+    var hideAllOthers = e.browserEvent.metaKey|| e.browserEvent.ctrlKey;
+    if (hideAllOthers) {
+        var seriesIndex = this.index;
+        var series = this.chart.series;
+        var showOne = false;
+        for (var i = 0; i < series.length; i++) {
+            if (series[i].index === seriesIndex) {
+                if (!series[i].visible) {series[i].setVisible(true, false);}
+                else if (series.filter(a=>a.visible===true).length==1&&this.name!='Wildfire'){
+                    series.forEach(n=>
+                        {n.setVisible(true,false);}
+                    )
+                    this.chart.redraw();
+                    return false;
+                } else if(this.name=='Wildfire') {
+                  if(series[i].visible){
+                    series.forEach(n=>
+                        {n.setVisible(false,false);}
+                    )
+                    series[i].setVisible(true,false);
+                    this.chart.redraw();
+                    return false;
+                  } else{
+                  
+                  series.forEach(n=>
+                        {n.setVisible(true,false);}
+                    )
+                    this.chart.redraw();
+                    return false;
+                    
+                  }
+                }
+            }
+        else {
+            if (series[i].visible) {series[i].setVisible(false, false);};
+        }
+    }
+    this.chart.redraw();
+    return false;
+}}"))
+    )
+  ) %>% 
+  htmlwidgets::saveWidget('naturaldisaster.html',selfcontained = FALSE)
+hc 
+```
+
+```{r}
+
+transport<-transport %>% 
+  pivot_longer(-c(Year), names_to="transportation_type", values_to="co2")
+transport<-transport %>% 
+  mutate(transportation_type=str_replace_all(transportation_type,"Medium..and.heavy.trucks","Medium and heavy trucks")) %>% 
+  mutate(transportation_type=str_replace_all(transportation_type,"Light.commercial.vehicles","Light commercial vehicles")) %>% 
+  mutate(transportation_type=str_replace_all(transportation_type,"Passenger.cars","Passenger cars")) %>% 
+  mutate(transportation_type=str_replace_all(transportation_type,"Two.three.wheelers","Two/three-wheelers")) %>% 
+  mutate(transportation_type=str_replace_all(transportation_type,"Buses.and.minibuses","Buses and minibuses"))
+
+transport_2020 <- transport %>% 
+  filter(Year<2021)
+
+transport_after<-transport %>% 
+  filter(Year>2020)
+```
+
+```{r}
+transport_plot_2020 <- transport_2020 %>% 
+  hchart(
+    'column', hcaes(x = 'Year', y = 'co2', group = 'transportation_type',opacity=0.8),
+    stacking = "normal"
+    ) %>%
+  hc_plotOptions(series=list(marker=list(enabled=FALSE),datalabels=list( enabled = TRUE,inside=TRUE))) %>% 
+  hc_colors(col_theme) %>% 
+  hc_title(
+    text = "Transportation is one of the leading causes in the rise of C02 emissions.",
+    widthAdjust=-100) %>% 
+    hc_tooltip(useHTML=TRUE,valueDecimals=2) %>% 
+  hc_yAxis(minorGridLineWidth=0,
+  title = list(text = "Global C02 emissions (gigatons)")) %>% 
+  hc_credits(
+    enabled = TRUE, 
+    text = "Source: IEA. All Rights Reserved",
+    href = "https://www.iea.org/"
+  ) %>% 
+  hc_xAxis(gridLineWidth=0,minorGridLineWidth=0) %>% 
+hc_legend(title=list(text='<span style="font-size: 9px; color: #666; font-weight: normal">(Click to hide; ctrl-click/command-click to filter/show all;)</span>')) %>% 
+  hc_plotOptions(
+  series = list( 
+    events = list(
+      legendItemClick = JS("function(e) {
+    var hideAllOthers = e.browserEvent.metaKey|| e.browserEvent.ctrlKey;
+    if (hideAllOthers) {
+        var seriesIndex = this.index;
+        var series = this.chart.series;
+        var showOne = false;
+        for (var i = 0; i < series.length; i++) {
+            if (series[i].index === seriesIndex) {
+                if (!series[i].visible) {series[i].setVisible(true, false);}
+                else if (series.filter(a=>a.visible===true).length==1&&this.name!='Two/three-wheelers'){
+                    series.forEach(n=>
+                        {n.setVisible(true,false);}
+                    )
+                    this.chart.redraw();
+                    return false;
+                } else if(this.name=='Two/three-wheelers') {
+                  if(series[i].visible){
+                    series.forEach(n=>
+                        {n.setVisible(false,false);}
+                    )
+                    series[i].setVisible(true,false);
+                    this.chart.redraw();
+                    return false;
+                  } else{
+                  
+                  series.forEach(n=>
+                        {n.setVisible(true,false);}
+                    )
+                    this.chart.redraw();
+                    return false;
+                    
+                  }
+                }
+            }
+        else {
+            if (series[i].visible) {series[i].setVisible(false, false);};
+        }
+    }
+    this.chart.redraw();
+    return false;
+}}"))
+    )
+  )
+transport_plot_2020
+
+htmlwidgets::saveWidget(transport_plot_2020,'transportation2020.html')
+
+
+```
+
+```{r}
+transport_plot_after <- transport_after %>% 
+  hchart(
+    'column', hcaes(x = 'Year', y = 'co2', group = 'transportation_type',opacity=0.8),
+    stacking = "normal"
+    ) %>%
+  hc_plotOptions(series=list(marker=list(enabled=FALSE),datalabels=list( enabled = TRUE,inside=TRUE))) %>% 
+  hc_colors(col_theme) %>% 
+  hc_title(
+    text = "By using fossil fuel alternatives, we can decrease our emissions by 2070.",
+    widthAdjust= 0) %>% 
+  hc_subtitle(text = "In a sustainable development scenerio, the dashed lines indicates the predicted year when the mode of transportation largely stops consuming fossil fuels and switch to low-carbon electricity technologies",
+              widthAdjust=-350) %>% 
+  hc_yAxis(minorGridLineWidth = 0,
+title = list(text = "Global C02 emissions (gigatons)")) %>% 
+  hc_credits(
+    enabled = TRUE, 
+    text = "Source: IEA. All Rights Reserved",
+    href = "https://www.iea.org/"
+  ) %>% 
+  hc_tooltip(useHTML=TRUE,valueDecimals=2) %>% 
+  hc_legend(title=list(text='<span style="font-size: 9px; color: #666; font-weight: normal">(Click to hide; ctrl-click/command-click to filter/show all;)</span>')) %>% 
+  hc_plotOptions(
+  series = list( 
+    events = list(
+      legendItemClick = JS("function(e) {
+    var hideAllOthers = e.browserEvent.metaKey|| e.browserEvent.ctrlKey;
+    if (hideAllOthers) {
+        var seriesIndex = this.index;
+        var series = this.chart.series;
+        var showOne = false;
+        for (var i = 0; i < series.length; i++) {
+            if (series[i].index === seriesIndex) {
+                if (!series[i].visible) {series[i].setVisible(true, false);}
+                else if (series.filter(a=>a.visible===true).length==1&&this.name!='Two/three-wheelers'){
+                    series.forEach(n=>
+                        {n.setVisible(true,false);}
+                    )
+                    this.chart.redraw();
+                    return false;
+                } else if(this.name=='Two/three-wheelers') {
+                  if(series[i].visible){
+                    series.forEach(n=>
+                        {n.setVisible(false,false);}
+                    )
+                    series[i].setVisible(true,false);
+                    this.chart.redraw();
+                    return false;
+                  } else{
+                  
+                  series.forEach(n=>
+                        {n.setVisible(true,false);}
+                    )
+                    this.chart.redraw();
+                    return false;
+                    
+                  }
+                }
+            }
+        else {
+            if (series[i].visible) {series[i].setVisible(false, false);};
+        }
+    }
+    this.chart.redraw();
+    return false;
+}}"))
+    )
+  )
+transport_plot_after<-transport_plot_after %>% 
+  hc_xAxis(gridLineWidth=0,minorGridLineWidth=0,
+    plotLines=list(
+    list(
+      label=list(text="2&3-wheelers"),
+      width=2,
+      value=2040,
+      dashStyle="Dash"
+      ),
+    list(
+      label=list(text="Rail"),
+      width=2,
+      value=2050,
+      dashStyle="Dash"
+      
+    ),
+     list(
+      label=list(text="Light commercial vehicles"),
+      width=2,
+      value=2055,
+      dashStyle="Dash"
+      
+    ),
+     list(
+      label=list(text="Passenger cars, buses and minivans"),
+      width=2,
+      value=2070,
+      dashStyle="Dash"
+      
+    )
+    ))
+transport_plot_after
+#htmlwidgets::saveWidget(transport_plot_after,'transportationPredict.html')
+```
+
+```{r}
+actions<-read.csv("data/actions_data.csv")
+actions <- actions %>% 
+  rowwise() %>% 
+  mutate( mymean = mean(c(Lowest.range.of.co2.reduction,Highest.range.of.co2.reduction) )) %>% 
+  arrange(mymean) %>% 
+  mutate(Actions=factor(Actions,Actions)) 
+```
+
+
+```{r}
+p<-ggplot(actions) +
+  geom_segment( aes(x=Actions, xend=Actions, y=Lowest.range.of.co2.reduction, yend=Highest.range.of.co2.reduction), color="grey") +
+  geom_point( aes(x=Actions, y=Lowest.range.of.co2.reduction,color=I("#F78C6B")), size=3 ) +
+  geom_point( aes(x=Actions, y=Highest.range.of.co2.reduction,color=("#073B4C")), size=3 ) +
+  coord_flip()+
+  scale_y_sqrt()+
+  xlab("") +
+  ylab("Approximate CO2 reduced per year (kg)")  +
+  labs(title="Recommended individual actions to reduce greenhouse gas emissions") +
+  theme_minimal() +
+  theme(
+    legend.position = "left",
+    plot.title = element_text(size= 14, hjust=0.01, margin = margin(b = -0.1, t = 0.4, l = 2, unit = "cm"))
+  )
+ggplotly(p, width=1050)
+
+```
+
+
+
+```{r}
+
+fig <- plot_ly(actions, color = I("Gray8"),width=1000,height=500)
+fig <- fig %>% add_segments(x = ~Lowest.range.of.co2.reduction, xend = ~Highest.range.of.co2.reduction, y = ~Actions, yend = ~Actions, showlegend = FALSE)
+fig <- fig %>% add_markers(x = ~Lowest.range.of.co2.reduction, y = ~Actions, name = "Lowest range of CO2 reduction", color = I("#F78C6B"),size=3)
+fig <- fig %>% add_markers(x = ~Highest.range.of.co2.reduction, y = ~Actions, name = "Highest range of CO2 reduction", color = I("#83d483"),size=3)
+fig <- fig %>% layout(
+  autosize = F,height=470,
+   margin=list(t=70),
+   paper_bgcolor= "rgba(0,0,0,0)",
+  plot_bgcolor="rgba(0,0,0,0)",
+    title = list(text="Recommended individual actions to reduce greenhouse gas emissions",x=0.5,font=list(size=22)),
+  legend = list(orientation = 'h', x=0.1, y=-0.6),
+    yaxis=list(title="", type='category',showgrid =F),
+    xaxis = list(title = "Approximate CO2 reduced per year (kg)",
+                 range=c(-1000,120000),
+                 rangeslider=list(range=c(-5, 120000),thickness=0.2, borderwidth=1)
+                 ),
+    annotations=list(xref='paper',
+                     yref='paper',
+                     x=0.5,y=-0.4,
+                     showarrow=FALSE,
+                     text='Use this range slider to zoom into values')
+  )
+  fig
+htmlwidgets::saveWidget(as_widget(fig),'actionsPlot.html',selfcontained = FALSE)
+```
+

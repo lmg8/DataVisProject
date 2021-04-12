@@ -1,0 +1,191 @@
+---
+title: ""
+output: html_document
+---
+
+<style type="text/css">
+h1.title {
+font-family: Impact, Charcoal, sans-serif;
+font-size: 140px;
+color: #7acdf1;
+font-weight: 700;
+text-decoration: none;
+font-style: normal;
+font-variant: normal;
+text-transform: uppercase;
+}
+
+h3.author{
+  font-family: Impact, Charcoal, sans-serif;
+  font-weight: 700;
+  text-decoration: none;
+  font-style: normal;
+  font-variant: normal;
+  text-transform: uppercase;
+  font-size:50px;
+  color:white;
+}
+
+h1.section-title{
+  font-family: Impact, Charcoal, sans-serif;
+  font-weight: 700;
+  text-decoration: none;
+  font-style: normal;
+  font-variant: normal;
+  text-transform: uppercase;
+  font-size:50px;
+  color:#1b3c65;
+}
+
+img.earth{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  max-width: 75%;
+}
+
+
+.main-container {
+    max-width: 1950px;
+    width: 100%;
+    margin: 0 auto;
+    background-color: #1b3c65;
+  }
+
+.bg-blue{
+background-color:#98dbf5;
+}
+
+
+.bg-darkblue{
+    background-color: #1b3c65;
+}
+
+<!-- change background colours and border of carousel -->
+button::-moz-focus-inner { border: 0; }
+iframe{
+  background-color: transparent;
+  border-color:transparent
+}
+
+.slick-slide {
+    background: #ffffff00;
+}
+
+plot-container plotly {
+ background-color: #ff0000;
+}
+
+<!-- change arrow colours -->
+.slick-prev:before, .slick-next:before {
+    color: #ff0000;
+}
+
+
+</style>
+```{r global_options, include=FALSE, message=FALSE, warning=FALSE}
+
+knitr::opts_chunk$set(fig.width=3, fig.height=3, echo = FALSE, warning=FALSE, message=FALSE)
+```
+<div class="container main-container bg-darkblue">
+  <div class="col-lg-8">
+  <h1 class="title">Climate Change - Who Cares?</h1>
+  <h3 class="title author">By: The Climate Changers</h3>
+  </div>
+  <div class="col-lg-4">
+  <img class="earth" src="images/sadearth.svg">
+  </div>
+</div>
+
+<div class="container main-container bg-blue" style="padding:50px;">
+<div class="col-lg-4 ">
+<h1 class="section-title">PUBLIC OPINION</h1>
+<p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</p>
+</div>
+
+
+
+<div class="col-lg-8">
+```{r}
+library(slickR)
+library(leaflet)
+library(plotly)
+library(htmlwidgets)
+
+library(tidyverse)
+
+library(svglite)
+library(lattice)
+library(ggplot2)
+library(rvest) 
+library(reshape2)
+library(dplyr)
+
+# l <- leaflet() %>% 
+#   addTiles()%>%
+#   htmlwidgets::saveWidget('leaflet.html')
+# 
+# leaf_chr <- paste0(readLines('leaflet.html'),collapse='\n')
+# 
+# leaf_obj <- rep(leaf_chr,2)
+# 
+# plot_chr <- paste0(readLines('ggplotly.html'),collapse='\n')
+
+natural_disaster<-paste0(readLines('naturaldisaster.html'),collapse='\n')
+transport2020HTML<-paste0(readLines('transportation2020.html'),collapse='\n')
+transportPredictHTML<-paste0(readLines('transportationPredict.html'),collapse='\n')
+
+# p1 = ggplot(iris, aes(x = Species, y = Sepal.Length)) + geom_point()
+# p2 = ggplot(iris, aes(x = Species, y = Sepal.Width)) + geom_point()
+# htmlwidgets::saveWidget(ggplotly(p1), 'p1.html')
+# p1_chr <- paste0(readLines('p1.html'),collapse='\n')
+# p1 = xmlSVG({show(p1)}, standalone = TRUE, height = 4, width = 4)  
+# p2 = xmlSVG({show(p2)}, standalone = TRUE, height = 4, width = 4)  
+
+# plotsToSVG=list(
+#   #Standard Plot
+#     #xmlSVG({plot(1:10)},standalone=TRUE),
+#   #ggplot
+#     xmlSVG({show(ggplot(iris,aes(x=Sepal.Length,y=Sepal.Width,colour=Species))+
+#                    geom_point())},standalone=TRUE), 
+#   #lattice dotplot
+#     xmlSVG({print(dotplot(variety ~ yield | site , data = barley, groups = year,
+#                           key = simpleKey(levels(barley$year), space = "right"),
+#                           xlab = "Barley Yield (bushels/acre) ",
+#                           aspect=0.5, layout = c(1,6), ylab=NULL))
+#             },standalone=TRUE) 
+# )
+# 
+# #make the plot self contained SVG to pass into slickR 
+# s.in=sapply(plotsToSVG,function(sv){as.character(sv)})
+
+#plot_obj <- list(natural_disaster,leaf_chr,s.in,'infograph layout.png')
+plot_obj <- list(natural_disaster,transport2020HTML,transportPredictHTML)
+opts <- slickR::settings(slidesToShow =1,infinite = FALSE)
+
+(slickR::slickR(plot_obj,slideType = 'iframe', height=600) + opts)
+```
+</div>
+</div>
+
+<div class="container main-container" style="padding:50px;background-color:#d2d2d1;margin:50px 0px">
+<div class="col-lg-8">
+```{r}
+actionsHTML<-paste0(readLines('actionsPlot.html'),collapse='\n')
+plot_obj <- list(transport2020HTML,transportPredictHTML,actionsHTML)
+opts <- slickR::settings(slidesToShow =1,infinite = FALSE)
+
+(slickR::slickR(plot_obj,slideType = 'iframe', height=600) + opts)
+```
+
+</div>
+<div class="col-lg-4">
+<h1 class="section-title">CURRENT SITUATION</h1>
+<p>
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+</p>
+</div>
+
+</div
+</div>
