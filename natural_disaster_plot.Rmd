@@ -92,9 +92,8 @@ hc <- nd %>%
   hc_credits(
     enabled = TRUE, 
     text = "Source: EM-DAT, CRED / UCLouvain, Brussels, Belgium – www.emdat.be ( D. Guha-Sapir)",
-    style = list(color="white"),
-    href = "https://www.emdat.be"
-  )%>%   hc_legend(title=list(text='<span style="font-size: 9px; color: #666; font-weight: normal">(Click to hide; ctrl-click/command-click to filter/show all;)</span>')) %>% 
+    href = 'javascript:void(window.open("https://www.emdat.be","_blank"))'
+  )%>%   hc_legend(title=list(text='<span style="font-size: 12px; color: #666; font-weight: normal">(Click to hide; ctrl-click/command-click to filter/show all;)</span>')) %>% 
   hc_plotOptions(
   series = list( 
     events = list(
@@ -142,8 +141,9 @@ hc <- nd %>%
     )
   ) 
 
-#htmlwidgets::saveWidget(hc,'naturaldisaster.html',selfcontained = FALSE)
 hc 
+htmlwidgets::saveWidget(hc,'naturaldisaster.html',selfcontained = FALSE)
+
 ```
 
 ```{r}
@@ -181,10 +181,10 @@ transport_plot_2020 <- transport_2020 %>%
   hc_credits(
     enabled = TRUE, 
     text = "Source: IEA. All Rights Reserved",
-    href = "https://www.iea.org/"
+    href = 'javascript:void(window.open("https://www.iea.org/","_blank"))'
   ) %>% 
   hc_xAxis(gridLineWidth=0,minorGridLineWidth=0) %>% 
-hc_legend(title=list(text='<span style="font-size: 9px; color: #666; font-weight: normal">(Click to hide; ctrl-click/command-click to filter/show all;)</span>')) %>% 
+hc_legend(title=list(text='<span style="font-size: 12px; color: #666; font-weight: normal">(Click to hide; ctrl-click/command-click to filter/show all;)</span>')) %>% 
   hc_plotOptions(
   series = list( 
     events = list(
@@ -233,7 +233,7 @@ hc_legend(title=list(text='<span style="font-size: 9px; color: #666; font-weight
   )
 transport_plot_2020
 
-#htmlwidgets::saveWidget(transport_plot_2020,'transportation2020.html')
+htmlwidgets::saveWidget(transport_plot_2020,'transportation2020.html')
 
 
 ```
@@ -256,10 +256,10 @@ title = list(text = "Global C02 emissions (gigatons)")) %>%
   hc_credits(
     enabled = TRUE, 
     text = "Source: IEA. All Rights Reserved",
-    href = "https://www.iea.org/"
+    href = 'javascript:void(window.open("https://www.iea.org/","_blank"))'
   ) %>% 
   hc_tooltip(useHTML=TRUE,valueDecimals=2) %>% 
-  hc_legend(title=list(text='<span style="font-size: 9px; color: #666; font-weight: normal">(Click to hide; ctrl-click/command-click to filter/show all;)</span>')) %>% 
+  hc_legend(title=list(text='<span style="font-size: 12px; color: #666; font-weight: normal">(Click to hide; ctrl-click/command-click to filter/show all;)</span>')) %>% 
   hc_plotOptions(
   series = list( 
     events = list(
@@ -338,7 +338,7 @@ transport_plot_after<-transport_plot_after %>%
     )
     ))
 transport_plot_after
-#htmlwidgets::saveWidget(transport_plot_after,'transportationPredict.html')
+htmlwidgets::saveWidget(transport_plot_after,'transportationPredict.html')
 ```
 
 ```{r}
@@ -382,6 +382,6 @@ fig <- fig %>% layout(
                      x=0,y=1.13,
                      showarrow=FALSE)
 fig
-htmlwidgets::saveWidget(as_widget(fig),'actionsPlot.html',selfcontained = FALSE)
+#htmlwidgets::saveWidget(as_widget(fig),'actionsPlot.html',selfcontained = FALSE)
 ```
 

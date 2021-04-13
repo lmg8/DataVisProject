@@ -107,7 +107,7 @@ a<- a %>%
   hc_credits(
     enabled = TRUE, 
     text = "Source: Kaggle",
-    href = "https://www.kaggle.com/edqian/twitter-climate-change-sentiment-dataset"
+    href = 'javascript:void(window.open("https://www.kaggle.com/edqian/twitter-climate-change-sentiment-dataset","_blank"))'
   )
 a
 #htmlwidgets::saveWidget(a,"figure1.html",selfcontained = FALSE)
