@@ -70,33 +70,35 @@ final2 <- final %>%
   left_join(data.frame(tweetInfo$label,tweetInfo$n),by=c("label"="tweetInfo.label"))
 
 ```
+
 ```{r eval=FALSE, include=FALSE}
 
 final2$img<-c("news.png",'pro.png','neutral.png',"anti.png")
+final2$words<-c("TRUMP, VIA, US, SAYS, NEW","BELIEVE, TRUMP, DOESN’T, REAL, US","TRUMP, LIKE, REAL, US, BELIEVE","US, SCIENCE, OBAMA, HOAX, REAL")
 a <- hchart(
   final2,
   "pie",
   hcaes(name = label, y = tweetInfo.n),
-  innerSize = 350
+  innerSize = 250
   )
-
-
 
 a<- a %>% 
   hc_title(text="9% of the population still do not believe in man-made climate change.") %>% 
+  hc_colors(c("#1c3c65","#1c3c65","#1c3c65","#fffe8d")) %>% 
   hc_tooltip(
     useHTML = TRUE,
     shadow = FALSE,
     borderWidth = 0,
     headerFormat = "",
 
-    pointFormat="<img src ='{point.img}' width='450px'>",
+    #pointFormat="<img src ='{point.img}' width='450px'>",
+    pointFormat='<h3 style="color:{point.color}";>Top 5 frequent words: </h3> {point.words} ',
     hideDelay = 400,
     positioner = JS(
       "function () {
         /* one of the most important parts! */
-        xp =  this.chart.chartWidth/2 - this.label.width/2
-        yp =  150
+        xp =  this.chart.chartWidth-this.chart.chartWidth/2 - 90
+        yp =  this.chart.chartHeight-this.chart.chartHeight/2 - 30
       
         return { x: xp, y: yp };
       
@@ -110,7 +112,7 @@ a<- a %>%
     href = 'javascript:void(window.open("https://www.kaggle.com/edqian/twitter-climate-change-sentiment-dataset","_blank"))'
   )
 a
-#htmlwidgets::saveWidget(a,"figure1.html",selfcontained = FALSE)
+htmlwidgets::saveWidget(a,"figure1.html",selfcontained = FALSE)
 ```
 
 
@@ -136,18 +138,11 @@ bar_anti<- hchart(
     }"
   )))%>% 
   hc_colors("#7798bf") %>% 
-  hc_title(text="Top 5 Words Most Frequent Words") %>% 
+  hc_title(text="Top 5 Most Frequent Words") %>% 
   hc_yAxis(minorGridLineWidth = 0, gridLineWidth=0) %>% 
   hc_xAxis(minorGridLineWidth = 0, gridLineWidth=0, color="#")
   
 bar_anti
-
-# htmlwidgets::saveWidget(widget = bar_anti, file = "figure1bar/plot.html")
-# library(webshot)
-# 
-# webshot::webshot(url = "figure1bar/plot.html", 
-#                  file = "figure1bar/plot.png",
-#                  delay=3)
 ```
 
 
@@ -173,7 +168,7 @@ bar_news<- hchart(
     }"
   )))%>% 
   hc_colors("rgb(149, 206, 255)") %>% 
-  hc_title(text="Top 5 Words Most Frequent Words") %>% 
+  hc_title(text="Top 5 Most Frequent Words") %>% 
   hc_yAxis(minorGridLineWidth = 0, gridLineWidth=0) %>% 
   hc_xAxis(minorGridLineWidth = 0, gridLineWidth=0, color="#")
   
@@ -203,7 +198,7 @@ bar_neutral<- hchart(
     }"
   )))%>% 
   hc_colors("rgb(169, 255, 151)") %>% 
-  hc_title(text="Top 5 Words Most Frequent Words") %>% 
+  hc_title(text="Top 5 Most Frequent Words") %>% 
   hc_yAxis(minorGridLineWidth = 0, gridLineWidth=0) %>% 
   hc_xAxis(minorGridLineWidth = 0, gridLineWidth=0, color="#")
   
@@ -233,10 +228,41 @@ bar_pro<- hchart(
     }"
   )))%>% 
   hc_colors("rgb(255, 188, 117)") %>% 
-  hc_title(text="Top 5 Words Most Frequent Words") %>% 
+  hc_title(text="Top 5 Most Frequent Words") %>% 
   hc_yAxis(minorGridLineWidth = 0, gridLineWidth=0) %>% 
   hc_xAxis(minorGridLineWidth = 0, gridLineWidth=0, color="#")
   
 bar_pro
+```
+
+```{r}
+
+library(tidyverse)
+library(highcharter)
+library(RColorBrewer)
+
+
+tweetInfo %>%
+  hctreemap2(
+    x="label",
+    group_vars = c("type"),
+    size_var = "n",
+    layoutAlgorithm = "squarified",
+    levelIsConstant = TRUE,
+    levels = list(
+      list(level = 1, dataLabels = list(enabled = TRUE)),
+      list(level = 2, dataLabels = list(enabled = FALSE))
+    )
+  ) %>%
+  hc_colorAxis(
+    minColor = brewer.pal(7, "YlOrRd")[1],
+    maxColor = brewer.pal(7, "YlGnBu")[4]
+  ) %>%
+  hc_tooltip(pointFormat = "<b>{point.y}</b>:<br>
+             Value: {point.value:,.0f}<br>
+             Color Value: {point.colorValue:,.0f}")
+
+
+
 ```
 
