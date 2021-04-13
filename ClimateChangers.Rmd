@@ -8,6 +8,7 @@ output: html_document
 #  encoding=encoding,
 #  output_file=file.path(dirname(input_file), out_dir, 'index.html'))})
 ---
+<link rel="shortcut icon" href="images/happy.svg" />
 <style type="text/css">
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&family=Raleway:wght@400;700&display=swap');
 .title{
@@ -127,6 +128,8 @@ This interactive article aims to investigate how people really feel about climat
 <div class="col-lg-4 ">
 <h1 class="section-title">PUBLIC OPINION</h1>
 <p>
+<img class="earth" style="max-width: 27%;float: left;margin-right: 5px;" src="images/skeptical.svg"> 
+
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 </p>
 </div>
@@ -212,7 +215,16 @@ opts <- slickR::settings(slidesToShow =1,infinite = FALSE)
 <div class="col-lg-4">
 <h1 class="section-title" style="font-size: 49px;">CURRENT SITUATION</h1>
 <p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+As a refresher, the definition of Climate change is "a long-term change in the average weather patterns that have come to define Earth’s local, regional and global climates" according to [NASA](https://climate.nasa.gov/resources/global-warming-vs-climate-change/). Global warming is a big part of climate change, and is caused by higher-than-normal amounts of greenhouse gases in the Earth's atmosphere.
+</p>
+
+<p>
+<img class="earth" style="max-width: 27%;float: right;margin-left: 5px;" src="images/pained.svg"> 
+In the past 30 years, world greenhouse gas emissions have increased by nearly 45% at a rate higher than ever before. In fact, according to [NASA](https://climate.nasa.gov), carbon dioxide, the largest contributor, is at its highest concentration in the air in 650,000 years! These high levels of Carbon dioxide come mainly from human activities (such as burning of fossil fuels, deforestation and livestock farming) and thus fuel the global warming crisis leading to drastic climate changes across the globe such as increasing temperatures and melting ice caps. [Insert interesting insights from temperature and ice mass graphs]
+</p>
+
+<p>
+With increasing temperatures, the summers are increasingly hot and we use more electricity through fans and air conditioning to keep cool. However, this in turn also releases more carbon emissions into the atmosphere further contributing to global warming and perpetuating this vicious cycle of climate change.
 </p>
 </div>
 
@@ -224,6 +236,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 <div class="col-lg-4">
 <h1 class="section-title" style="font-size: 49px;">EFFECTS ON HUMANS</h1>
 <p>
+<img class="earth" style="max-width: 27%;float: right;margin-left: 5px;" src="images/exhausted.svg"> 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 </p>
 </div>
@@ -259,6 +272,7 @@ opts <- slickR::settings(slidesToShow =1,infinite = FALSE)
 <p>
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 </p>
+<img class="earth" style="max-width: 95%;" src="images/hug2.svg"> 
 </div>
 
 </div>
