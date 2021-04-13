@@ -1,0 +1,242 @@
+---
+title: "figure1"
+author: "Lucia Guintu"
+date: "4/12/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r}
+library(tidyverse)
+
+```
+
+```{r}
+topwords<-read.csv("data/Sentiment-Words.csv")
+tweets<-read.csv("data/twitter_sentiment_data.csv")
+```
+
+```{r}
+numTweets<-tweets %>% 
+  count(sentiment)
+```
+
+
+```{r}
+sentiment<-c(2,1,0,-1)
+info<-c('Tweets with factual news on climate change','Tweets that support the belief of man-made climate change','Tweets that neither support nor refuse the belief of man-made climate change','Tweets that do not believe in man-made climate change')
+type<-c("news","pro","neutral","anti")
+df<-data.frame(sentiment,info,type)
+```
+
+```{r}
+tweetInfo<-df %>% 
+  full_join(numTweets,by=c("sentiment" = "sentiment"))
+
+tweetInfo$Pct <- round(tweetInfo$n / sum(tweetInfo$n) * 100,2)
+tweetInfo$label <- paste0(info," - ",tweetInfo$Pct,"%")
+```
+
+```{r}
+final<-tweetInfo %>% 
+  full_join(topwords, by=c("type"="Sentiment"))
+
+```
+```{r}
+library(highcharter)
+options(highcharter.theme = hc_theme_merge(hc_theme_gridlight(tooltip = list(valueDecimals = 0)),
+  hc_theme(
+     chart = list(backgroundColor="#98dbf5"),
+     title = list(style = list(fontSize = "25px")),
+     Axis = list(style=list(fontSize="25px"))
+    )
+  )
+)
+```
+
+
+```{r}
+final2 <- final %>% 
+  select(label, Word, Count) %>% 
+  nest(-label) %>% 
+  mutate(
+    data = map(data, mutate_mapping, hcaes(x = Word, y = Count), drop = TRUE),
+    data = map(data, list_parse)
+    ) %>%
+  rename(ttdata = data) %>% 
+  left_join(data.frame(tweetInfo$label,tweetInfo$n),by=c("label"="tweetInfo.label"))
+
+```
+```{r eval=FALSE, include=FALSE}
+
+final2$img<-c("news.png",'pro.png','neutral.png',"anti.png")
+a <- hchart(
+  final2,
+  "pie",
+  hcaes(name = label, y = tweetInfo.n),
+  innerSize = 350
+  )
+
+
+
+a<- a %>% 
+  hc_title(text="9% of the population still do not believe in man-made climate change.") %>% 
+  hc_tooltip(
+    useHTML = TRUE,
+    shadow = FALSE,
+    borderWidth = 0,
+    headerFormat = "",
+
+    pointFormat="<img src ='{point.img}' width='450px'>",
+    hideDelay = 400,
+    positioner = JS(
+      "function () {
+        /* one of the most important parts! */
+        xp =  this.chart.chartWidth/2 - this.label.width/2
+        yp =  150
+      
+        return { x: xp, y: yp };
+      
+      }"),
+        backgroundColor = "transparent"
+
+    ) %>% 
+  hc_credits(
+    enabled = TRUE, 
+    text = "Source: Kaggle",
+    href = "https://www.kaggle.com/edqian/twitter-climate-change-sentiment-dataset"
+  )
+a
+#htmlwidgets::saveWidget(a,"figure1.html",selfcontained = FALSE)
+```
+
+
+```{r}
+anti<-final %>% 
+  select(type,Word,Count) %>% 
+  filter(!Word %in% c("climate", "change", "global", "warming")) %>% 
+  filter(type =="anti") %>% 
+  head(5)
+
+bar_anti<- hchart(
+  anti,
+  "bar",
+  hcaes(x = Word, y = Count),
+  dataLabels = list(
+  enabled = TRUE,
+  style=list(fontSize="20px", color="black",stroke="black"),
+  inside=TRUE,
+  formatter = JS(
+    "function() {
+      return this.key
+      + ': ' +this.point.y;
+    }"
+  )))%>% 
+  hc_colors("#7798bf") %>% 
+  hc_title(text="Top 5 Words Most Frequent Words") %>% 
+  hc_yAxis(minorGridLineWidth = 0, gridLineWidth=0) %>% 
+  hc_xAxis(minorGridLineWidth = 0, gridLineWidth=0, color="#")
+  
+bar_anti
+
+# htmlwidgets::saveWidget(widget = bar_anti, file = "figure1bar/plot.html")
+# library(webshot)
+# 
+# webshot::webshot(url = "figure1bar/plot.html", 
+#                  file = "figure1bar/plot.png",
+#                  delay=3)
+```
+
+
+```{r}
+news<-final %>% 
+  select(type,Word,Count) %>% 
+  filter(!Word %in% c("climate", "change", "global", "warming")) %>% 
+  filter(type =="news") %>% 
+  head(5)
+
+bar_news<- hchart(
+  news,
+  "bar",
+  hcaes(x = Word, y = Count),
+  dataLabels = list(
+  enabled = TRUE,
+  style=list(fontSize="20px", stroke="black"),
+  inside=TRUE,
+  formatter = JS(
+    "function() {
+      return this.key
+      + ': ' +this.point.y;
+    }"
+  )))%>% 
+  hc_colors("rgb(149, 206, 255)") %>% 
+  hc_title(text="Top 5 Words Most Frequent Words") %>% 
+  hc_yAxis(minorGridLineWidth = 0, gridLineWidth=0) %>% 
+  hc_xAxis(minorGridLineWidth = 0, gridLineWidth=0, color="#")
+  
+bar_news
+
+```
+
+```{r}
+neutral<-final %>% 
+  select(type,Word,Count) %>% 
+  filter(!Word %in% c("climate", "change", "global", "warming")) %>% 
+  filter(type =="neutral") %>% 
+  head(5)
+
+bar_neutral<- hchart(
+  neutral,
+  "bar",
+  hcaes(x = Word, y = Count),
+  dataLabels = list(
+  enabled = TRUE,
+  style=list(fontSize="20px", stroke="black"),
+  inside=TRUE,
+  formatter = JS(
+    "function() {
+      return this.key
+      + ': ' +this.point.y;
+    }"
+  )))%>% 
+  hc_colors("rgb(169, 255, 151)") %>% 
+  hc_title(text="Top 5 Words Most Frequent Words") %>% 
+  hc_yAxis(minorGridLineWidth = 0, gridLineWidth=0) %>% 
+  hc_xAxis(minorGridLineWidth = 0, gridLineWidth=0, color="#")
+  
+bar_neutral
+
+```
+
+```{r}
+pro<-final %>% 
+  select(type,Word,Count) %>% 
+  filter(!Word %in% c("climate", "change", "global", "warming")) %>% 
+  filter(type =="pro") %>% 
+  head(5)
+
+bar_pro<- hchart(
+  pro,
+  "bar",
+  hcaes(x = Word, y = Count),
+  dataLabels = list(
+  enabled = TRUE,
+  style=list(fontSize="20px",stroke="black"),
+  inside=TRUE,
+  formatter = JS(
+    "function() {
+      return this.key
+      + ': ' +this.point.y;
+    }"
+  )))%>% 
+  hc_colors("rgb(255, 188, 117)") %>% 
+  hc_title(text="Top 5 Words Most Frequent Words") %>% 
+  hc_yAxis(minorGridLineWidth = 0, gridLineWidth=0) %>% 
+  hc_xAxis(minorGridLineWidth = 0, gridLineWidth=0, color="#")
+  
+bar_pro
+```
+

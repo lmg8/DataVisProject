@@ -2,41 +2,42 @@
 title: "ClimateChangers"
 output: html_document
 
-knit: (function(input_file, encoding) {
-  out_dir <- 'docs';
-  rmarkdown::render(input_file,
- encoding=encoding,
- output_file=file.path(dirname(input_file), out_dir, 'index.html'))})
+# knit: (function(input_file, encoding) {
+#   out_dir <- 'docs';
+#   rmarkdown::render(input_file,
+#  encoding=encoding,
+#  output_file=file.path(dirname(input_file), out_dir, 'index.html'))})
 ---
-
 <style type="text/css">
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&family=Raleway:wght@400;700&display=swap');
 .title{
     display: none;
 }
-h1.page-title {
-font-family: Impact, Charcoal, sans-serif;
-font-size: 140px;
-color: #7acdf1;
-font-weight: 700;
-text-decoration: none;
-font-style: normal;
-font-variant: normal;
-text-transform: uppercase;
-}
 
-h3.author{
-  font-family: Impact, Charcoal, sans-serif;
-  font-weight: 700;
-  text-decoration: none;
+h1.page-title {
+  font-family: 'Raleway', sans-serif;
+  font-size: 118px;
+  color: #7acdf1;
   font-style: normal;
   font-variant: normal;
   text-transform: uppercase;
+  font-weight: 700;
+}
+
+h3.author{
+  font-family: 'Raleway', sans-serif;
+  text-decoration: none;
+  font-style: normal;
+  font-variant: normal;
+  text-transform: capitalize;
   font-size:50px;
   color:white;
+  margin-left: 10px;
+  font-weight:400;
 }
 
 h1.section-title{
-  font-family: Impact, Charcoal, sans-serif;
+  font-family: 'Raleway', sans-serif;
   font-weight: 700;
   text-decoration: none;
   font-style: normal;
@@ -47,11 +48,19 @@ h1.section-title{
 }
 
 img.earth{
-  margin-top: 10px;
+  margin-top: 25px;
   margin-bottom: 10px;
-  max-width: 75%;
+  max-width: 60%;
 }
 
+#intro{
+    font-family: 'Poppins', sans-serif;
+    text-align: left;
+    font-size: 23px;
+    color: white;
+    max-width: 1113px;
+    line-height: 1.4;
+}
 
 .main-container {
     max-width: 1950px;
@@ -90,12 +99,14 @@ plot-container plotly {
 }
 
 
+
 </style>
 ```{r global_options, include=FALSE, message=FALSE, warning=FALSE}
 
 knitr::opts_chunk$set(fig.width=3, fig.height=3, echo = FALSE, warning=FALSE, message=FALSE)
 ```
 <div class="container main-container bg-darkblue">
+<div class="row">
   <div class="col-lg-8">
   <h1 class="page-title">Climate Change - Who Cares?</h1>
   <h3 class="page-title author">By: The Climate Changers</h3>
@@ -104,8 +115,15 @@ knitr::opts_chunk$set(fig.width=3, fig.height=3, echo = FALSE, warning=FALSE, me
   <img class="earth" src="images/sadearth.svg">
   </div>
 </div>
+<div class="row" style="margin-top: 21px;">
+  <div class="col-md-12">
+  <h3 id="intro">Climate change is a topic that has been rehashed time and time again, but are people tuning in? Is any real progress being made towards protecting and saving our planet? <br>
+This interactive article aims to investigate how people really feel about climate change, what climate change means and how it affects us, and why you too should (or shouldn’t) care about it.</h3>
+  </div>
+</div>
+</div>
 
-<div class="container main-container bg-blue" style="padding:50px;">
+<div class="container main-container bg-blue" style="padding:50px;margin-top:30px">
 <div class="col-lg-4 ">
 <h1 class="section-title">PUBLIC OPINION</h1>
 <p>
@@ -144,7 +162,7 @@ library(dplyr)
 natural_disaster<-paste0(readLines('naturaldisaster.html'),collapse='\n')
 transport2020HTML<-paste0(readLines('transportation2020.html'),collapse='\n')
 transportPredictHTML<-paste0(readLines('transportationPredict.html'),collapse='\n')
-
+figure1html<-paste0(readLines('figure1.html'),collapse='\n')
 # p1 = ggplot(iris, aes(x = Species, y = Sepal.Length)) + geom_point()
 # p2 = ggplot(iris, aes(x = Species, y = Sepal.Width)) + geom_point()
 # htmlwidgets::saveWidget(ggplotly(p1), 'p1.html')
@@ -170,7 +188,7 @@ transportPredictHTML<-paste0(readLines('transportationPredict.html'),collapse='\
 # s.in=sapply(plotsToSVG,function(sv){as.character(sv)})
 
 #plot_obj <- list(natural_disaster,leaf_chr,s.in,'infograph layout.png')
-plot_obj <- list(natural_disaster,transport2020HTML,transportPredictHTML)
+plot_obj <- list(figure1html,natural_disaster)
 opts <- slickR::settings(slidesToShow =1,infinite = FALSE)
 
 (slickR::slickR(plot_obj,slideType = 'iframe', height=600) + opts)
@@ -190,7 +208,7 @@ opts <- slickR::settings(slidesToShow =1,infinite = FALSE)
 
 </div>
 <div class="col-lg-4">
-<h1 class="section-title">CURRENT SITUATION</h1>
+<h1 class="section-title" style="font-size: 49px;">CURRENT SITUATION</h1>
 <p>
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
 </p>
