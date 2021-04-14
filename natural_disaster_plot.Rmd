@@ -354,12 +354,12 @@ actions <- actions %>%
 
 ```{r}
 
-fig <- plot_ly(actions, color = I("Gray8"),width=1000,height=500)
+fig <- plot_ly(actions, color = I("Gray8"),width=795,height=595)
 fig <- fig %>% add_segments(x = ~Lowest.range.of.co2.reduction, xend = ~Highest.range.of.co2.reduction, y = ~Actions, yend = ~Actions, showlegend = FALSE)
 fig <- fig %>% add_markers(x = ~Lowest.range.of.co2.reduction, y = ~Actions, name = "Lowest range of CO2 reduction", color = I("#F78C6B"),size=3)
 fig <- fig %>% add_markers(x = ~Highest.range.of.co2.reduction, y = ~Actions, name = "Highest range of CO2 reduction", color = I("#83d483"),size=3)
 fig <- fig %>% layout(
-  autosize = F,height=470,
+  autosize = F,height=595,
    margin=list(t=70),
    paper_bgcolor= "rgba(0,0,0,0)",
   plot_bgcolor="rgba(0,0,0,0)",
@@ -379,7 +379,7 @@ fig <- fig %>% layout(
     add_annotations(text="Source: Seth Wynes and Kimberly A Nicholas 2017 Environ. Res. Lett. 12 074024", 
                     xref='paper',
                      yref='paper',
-                     x=0,y=1.13,
+                     x=-.8,y=1.11,
                      showarrow=FALSE)
 fig
 #htmlwidgets::saveWidget(as_widget(fig),'actionsPlot.html',selfcontained = FALSE)
