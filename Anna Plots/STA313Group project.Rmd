@@ -75,7 +75,7 @@ Loss_mass
 ```
 
 
-## Graph 6
+## Graph 6 (need to figure out a way to show many columns)
 
 ```{r}
 g6 <- read.xlsx("Graph_6_Electricity_usage.xlsx",1)
@@ -108,7 +108,7 @@ fig
 ```
 
 
-## Graph 9
+## Graph 9 (Is making pictograph)
 ```{r}
 g9 <- read.xlsx("Graph_9_Population_affected_by_landloss.xlsx",1) %>%
 filter(Percentage.difference < 0)
