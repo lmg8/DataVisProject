@@ -1,0 +1,150 @@
+---
+title: "STA313group_graphs"
+author: "Anna Lai"
+date: "4/2/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+#install.packages("xlsx")
+library(xlsx)
+library(dplyr) 
+library(ggplot2)
+library(plotly)
+library(MASS)
+
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Anna's graph 5,6, and 9
+### Desciption for each graph (haven't made any significant editions so far)
+
+Figure 5: In this interactive graph, we want to show another impact of climate change, which is the melting of ice. We chose a bar graph instead of a line graph because the measure of ice mass is in volume, which can be better visualized by the bars instead of a line. The reader can infer the mass of ice in the arctic areas of earth is shrinking from the graph.
+
+Figure 6: The readers can tell an increasing consumption of household electricity has generated an increasing amount of greenhouse gas into the atmosphere from this interactive line chart, in which each line represents a country. One can filter the countries via a drop down channel input to avoid overcrowding on the graph. In the “What can we do” session of the infographic, we will be able to advocate the message of reducing household electricity usage for helping to ease climate change.
+
+Figure 9: Shows the number of people who will be forced to flee from their homeland due to rise in sea level by country. We chose a static inverted bar graph with a human icon to resonate with the actual population being affected, and as an illustration of those global citizens being “flooded”. The actual number is labelled below each chart as scaling could be confusing as a trade off for presenting data in a novel way. Color is used as a tool to highlight the top 6 affected countries, which are in purple instead of pink.
+
+### The data sources for each graph are listed below:
+Graph 5: Wiese, D. N., D.-N. Yuan, C. Boening, F. W. Landerer, and M. M. Watkins (2019) JPL GRACE and GRACE-FO Mascon Ocean, Ice, and Hydrology Equivalent
+HDR Water Height RL06M CRI Filtered Version 2.0, Ver. 2.0, PO.DAAC, CA, USA. Dataset accessed [2021-04-12] at http://dx.doi.org/10.5067/TEMSC-3MJ62.
+
+Graph 6: IEA Statistics © OECD/IEA 2014 (http://www.iea.org/stats/index.asp), subject to https://www.iea.org/t&c/termsandconditions/
+
+Graph 9: Cliamte central: https://www.climatecentral.org/news/report-flooded-future-global-vulnerability-to-sea-level-rise-worse-than-previously-understood
+
+
+## Grpah 5
+```{r}
+g5 <- read.xlsx("Graph_5_Ice_Mass_data.xlsx", 1)
+g5
+
+Loss_mass <- hchart(
+  g5,
+  "column",
+  hcaes(x = Year, y = g5$Ice.mass.change..Gigatonnes.),
+  name = "Ice mass decrease",
+
+  dataLabels = list(
+  enabled = FALSE,
+  style=list(fontSize="15px", stroke="black"),
+  inside=TRUE,
+  formatter = JS(
+    "function() {
+      return this.key
+      + ': ' +this.point.y;
+    }"
+  )))%>% 
+  hc_title(text="Antarctic Ice mass is decreasing over the past decades (Gigatonnes)") %>% 
+  hc_yAxis(minorGridLineWidth = 0, gridLineWidth=0) %>% 
+  hc_xAxis(minorGridLineWidth = 2, gridLineWidth=0, color="#")%>% 
+  hc_credits(
+    text = "Wiese, D. N., D.-N. Yuan, C. Boening, F. W. Landerer, and M. M. Watkins (2019) JPL GRACE and GRACE-FO Mascon Ocean, Ice, and Hydrology Equivalent
+HDR Water Height RL06M CRI Filtered Version 2.0, Ver. 2.0, PO.DAAC, CA, USA.",
+    href = "http://dx.doi.org/10.5067/TEMSC-3MJ62",
+    enabled = TRUE
+    )%>% 
+ hc_yAxis(title = list(text = "Ice mass change (Gigatonnes)
+"), opposite = FALSE
+)%>% 
+  hc_colors("rgb(75, 0, 242)") 
+
+  
+Loss_mass
+
+```
+
+
+## Graph 6
+
+```{r}
+g6 <- read.xlsx("Graph_6_Electricity_usage.xlsx",1)
+
+```
+
+```{r}
+colnames(g6) <- c("country", "Electricity usage")
+fig <- plot_ly(g6, x = ~x, y = ~y, alpha = 0.3)
+fig <- fig %>% add_markers(marker = list(line = list(color = "black", width = 1)))
+fig <- fig %>% layout(
+    title = "Carbon emissoins by house electricity usage have increased over time",
+    xaxis = list(domain = c(0.1, 1)),
+    yaxis = list(title = "y"),
+    updatemenus = list(
+      list(
+        y = 0.8,
+        buttons = list(
+
+          list(method = "restyle",
+               args = list("type", "scatter"),
+               label = "Scatter"),
+
+          list(method = "restyle",
+               args = list("type", "histogram2d"),
+               label = "2D Histogram")))
+    ))
+
+fig
+```
+
+
+## Graph 9
+```{r}
+g9 <- read.xlsx("Graph_9_Population_affected_by_landloss.xlsx",1) %>%
+filter(Percentage.difference < 0)
+
+affected <- hchart(
+  g9,
+  "column",
+  hcaes(x = Place, y = g9$Percentage.difference, sort(y, FALSE)),
+  name = "Percentage of people over the entire population in the country",
+
+  dataLabels = list(
+  enabled = FALSE,
+  style=list(fontSize="15px", stroke="black"),
+  inside=TRUE,
+  formatter = JS(
+    "function() {
+      return this.key
+      + ': ' +this.point.y;
+    }"
+  )))%>% 
+  hc_title(text="Number of people whose home will be flooded under the sea level in 2050 (Projection)") %>% 
+  hc_yAxis(minorGridLineWidth = 0, gridLineWidth=0) %>% 
+  hc_xAxis(minorGridLineWidth = 2, gridLineWidth=0, color="#")%>% 
+  hc_credits(
+    text = "Wiese, D. N., D.-N. Yuan, C. Boening, F. W. Landerer, and M. M. Watkins (2019) JPL GRACE and GRACE-FO Mascon Ocean, Ice, and Hydrology Equivalent
+HDR Water Height RL06M CRI Filtered Version 2.0, Ver. 2.0, PO.DAAC, CA, USA.",
+    href = "http://dx.doi.org/10.5067/TEMSC-3MJ62",
+    enabled = TRUE
+    )%>% 
+ hc_yAxis(title = list(text = "Ice mass change (Gigatonnes)
+"), opposite = FALSE
+)%>% 
+  hc_colors("rgb(75, 0, 242)")
+
+  
+affected
+```
+
+
