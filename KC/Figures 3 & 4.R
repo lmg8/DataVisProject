@@ -3,8 +3,8 @@ library(tidyverse)
 library(readxl)
 library(latex2exp)
 # Get data
-ghg_cw_data <- read_excel("KC/data/CW_CAIT_GHG_Emissions.xlsx")
-temp_data <- read_csv("KC/data/GlobalTemperatures.csv")
+ghg_cw_data <- read_excel("data/CW_CAIT_GHG_Emissions.xlsx")
+temp_data <- read_csv("data/GlobalTemperatures.csv")
 
 # Figure 3
 ghg_cw_data_summary <- ghg_cw_data %>%
