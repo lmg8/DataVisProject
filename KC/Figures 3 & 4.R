@@ -1,7 +1,7 @@
 # Load libraries
 library(tidyverse)
 library(readxl)
-library(latex2exp)
+
 # Get data
 ghg_cw_data <- read_excel("data/CW_CAIT_GHG_Emissions.xlsx")
 temp_data <- read_csv("data/GlobalTemperatures.csv")
@@ -52,5 +52,5 @@ ggplot(aes(x = year), data = temp_data_summary) +
   theme(plot.background = element_rect(fill = "#d2d2d1", colour = "#d2d2d1")) +
   labs(title = "... and global temperatures continue rising",
        subtitle = "Average yearly temperatures 1990-2015",
-       x = "", y = "Temperature (?C)",
+       x = "", y = "Temperature (degrees Celsius)",
        caption = "Source: Berkeley Earth via Kaggle\nhttps://www.kaggle.com/berkeleyearth/climate-change-earth-surface-temperature-data")
