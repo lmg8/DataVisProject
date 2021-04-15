@@ -7,11 +7,16 @@ output: html_document
 
 ```{r setup, include=FALSE}
 #install.packages("xlsx")
+#install.packages("svglite")
+#install.packages("https://github.com/robertgrant/pictogram/blob/master/pictogram.R")
+
+library(highcharter)
 library(xlsx)
 library(dplyr) 
 library(ggplot2)
-library(plotly)
-library(MASS)
+library(jpeg)
+library(svglite)
+#library(pictogram)
 
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -67,7 +72,13 @@ HDR Water Height RL06M CRI Filtered Version 2.0, Ver. 2.0, PO.DAAC, CA, USA.",
  hc_yAxis(title = list(text = "Ice mass change (Gigatonnes)
 "), opposite = FALSE
 )%>% 
-  hc_colors("rgb(75, 0, 242)") 
+  hc_colors("#118AB2") %>% 
+  hc_chart(
+  plotBackgroundColor = "#9fe0f5",
+  plotBackgroundImage = NULL,
+  plotBorderWidth = 0,
+  plotShadow = FALSE
+  )
 
   
 Loss_mass
@@ -89,6 +100,9 @@ Link to the graph: https://public.tableau.com/views/Carbonemissionsbyhouseholdel
 g9 <- read.xlsx("Graph_9_Population_affected_by_landloss.xlsx",1) %>%
 filter(Percentage.difference < 0)
 
+res <-144
+man <- svglite("human-boy-person-man-svgrepo-com.svg", width = 10/res, height = 25/res)
+
 affected <- hchart(
   g9,
   "column",
@@ -104,23 +118,114 @@ affected <- hchart(
       return this.key
       + ': ' +this.point.y;
     }"
-  )))%>% 
+  )),
+  plotBackgroundImage = './cristian-palmer-XexawgzYOBc-unsplash.jpg',
+  plotBackgroundColor = "blue",
+  plotBorderWidth = 1,
+  plotShadow = TRUE
+  
+  )%>% 
   hc_title(text="Number of people whose home will be flooded under the sea level in 2050 (Projection)") %>% 
   hc_yAxis(minorGridLineWidth = 0, gridLineWidth=0) %>% 
   hc_xAxis(minorGridLineWidth = 2, gridLineWidth=0, color="#")%>% 
   hc_credits(
-    text = "Wiese, D. N., D.-N. Yuan, C. Boening, F. W. Landerer, and M. M. Watkins (2019) JPL GRACE and GRACE-FO Mascon Ocean, Ice, and Hydrology Equivalent
-HDR Water Height RL06M CRI Filtered Version 2.0, Ver. 2.0, PO.DAAC, CA, USA.",
-    href = "http://dx.doi.org/10.5067/TEMSC-3MJ62",
+    text = "Cliamte central",
+    href = "https://www.climatecentral.org/news/report-flooded-future-global-vulnerability-to-sea-level-rise-worse-than-previously-understood",
     enabled = TRUE
     )%>% 
- hc_yAxis(title = list(text = "Ice mass change (Gigatonnes)
+ hc_yAxis(title = list(text = "Percentage of total population
 "), opposite = FALSE
 )%>% 
-  hc_colors("rgb(75, 0, 242)")
-
+  hc_colors("#118AB2")
   
 affected
 ```
 
+```{r}
+imageb <- readJPEG("cristian-palmer-XexawgzYOBc-unsplash.jpg")
+imageb
+
+res <-144
+man <- svglite("human-boy-person-man-svgrepo-com.svg", width = 10/res, height = 25/res)
+man
+```
+
+
+```{r}
+res <- 144
+man <- svglite("human-boy-person-man-svgrepo-com.svg", width = 10/res, height = 25/res)
+
+pictogram(icon=man,
+
+n=c(12,35,52),
+
+grouplabels=c("dudes","chaps","lads"))
+
+```
+
+```{r}
+# requires image to be read in by readPNG or similar and supplied as "icon"
+
+# To do: allow for non-integer n
+
+pictogram<-function(icon,n,grouplabels="",
+
+hicons=20,vspace=0.5,labprop=0.2,labelcex=1){
+
+if(is.list(icon)) {
+
+licon<-icon
+
+} else {
+
+licon<-list(icon)
+
+for (i in 2:length(n)) {
+
+licon[[i]]<-icon
+
+}
+
+}
+
+library(reshape)
+
+sumn<-sum(n)
+
+group<-untable(df=matrix((1:length(n)),ncol=1),num=n)
+
+vicons<-ceiling(n/hicons)
+
+allv<-sum(vicons)
+
+tail<-n%%hicons
+
+# dim[1] is the height, dim[2] the width:
+
+devaspect<-dev.size(units="px")[1]/dev.size(units="px")[2]
+
+xlength<-1
+
+# get dims of all elements of licon, find greatest aspect and set ylength
+
+getdim<-function(z) {
+
+aspect<-dim(z)[1]/dim(z)[2]
+
+return(aspect)
+
+}
+
+all.ylengths<-unlist(lapply(licon,getdim))
+
+ylength<-max(all.ylengths)
+
+all.ylengths<-untable(df=matrix(all.ylengths,ncol=1),num=n)
+
+ytop<-allv*ylength
+
+if(devaspect*hicons<allv) warning("icons="" may="" extend="" above="" the="" top="" of="" graph")="" #="" vector="" icons="" per="" row="" iconrow<-as.vector(as.matrix(rbind(rep(hicons,length(vicons)),tail)))="" for="" how="" many="" times="" to="" repeat="" elements="" iconrow="" reprow<-as.vector(as.matrix(rbind((vicons-1),rep(1,length(vicons)))))="" perrow<-untable(df="matrix(iconrow,ncol=1),num=reprow)" spacing<-null="" (i="" in="" 1:(length(n)))="" {="" spacing<-c(spacing,rep((i-1)*vspace*ylength,n[i]))="" }="" y0<-spacing+(ylength*untable(df="matrix((1:allv)-1,ncol=1),num=perrow))" y1<-y0+all.ylengths="" there="" are="" more="" elegant="" ways="" make="" x0,="" but="" now...="" x0<-null="" 1:(length(perrow)))="" x0<-c(x0,(0:(perrow[i]-1)))="" x1<-x0+xlength="" leftplot<-floor(-(labprop*hicons))="" plot(c(leftplot,hicons),c(0,(devaspect*hicons)),="" type="n" ,bty="n" ,ylab="" ,xlab="" ,xaxt="n" ,yaxt="n" )="" lines(x="c(0,0),y=c(min(y0)-(ylength/2),max(y1)+(ylength/2)))" 1:sumn)="" rasterimage(image="licon[[group[i]]],xleft=x0[i],xright=x1[i]," ytop="y1[i],ybottom=y0[i])" find="" positions="" labels="" ylabpos<-rep(na,length(n))="" 1:length(n))="" ylabpos[i]<-(max(y1[group="=i])+min(y0[group==i]))/2" text(x="leftplot/2,y=ylabpos,labels=grouplabels,cex=labelcex)" }<="" code=""></allv)>
+
+}
+```
 
