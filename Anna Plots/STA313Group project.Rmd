@@ -8,7 +8,8 @@ output: html_document
 ```{r setup, include=FALSE}
 #install.packages("xlsx")
 #install.packages("svglite")
-#install.packages("https://github.com/robertgrant/pictogram/blob/master/pictogram.R")
+#install.packages("devtools", type = "win.binary")
+#evtools::install_github("leukgen/istack")
 
 library(highcharter)
 library(xlsx)
@@ -16,7 +17,6 @@ library(dplyr)
 library(ggplot2)
 library(jpeg)
 library(svglite)
-#library(pictogram)
 
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -164,68 +164,107 @@ grouplabels=c("dudes","chaps","lads"))
 ```
 
 ```{r}
-# requires image to be read in by readPNG or similar and supplied as "icon"
+library(istack)
+library(ggplot2)
 
-# To do: allow for non-integer n
+g9 <- read.xlsx("Graph_9_Population_affected_by_landloss.xlsx",1) %>%
+filter(Percentage.difference < 0)
 
-pictogram<-function(icon,n,grouplabels="",
 
-hicons=20,vspace=0.5,labprop=0.2,labelcex=1){
+set.seed(2018-12-09)
+cancers = simulate_cancers(15)
 
-if(is.list(icon)) {
+p = istack2(g9, 
+           var = "Place",
+           value = "Percentage decrease",
+           icon = "https://upload.wikimedia.org/wikipedia/commons/d/d8/Person_icon_BLACK-01.svg",
+           size = 0.03,
+           asp = 9)
 
-licon<-icon
+p + theme(panel.grid.major.x = element_line(colour = "grey", linetype = 'dashed')) +
+  ggtitle('Living under sea level')
+```
 
-} else {
+Desired table print
+```{r}
+cancers
+```
 
-licon<-list(icon)
-
-for (i in 2:length(n)) {
-
-licon[[i]]<-icon
-
-}
-
-}
-
-library(reshape)
-
-sumn<-sum(n)
-
-group<-untable(df=matrix((1:length(n)),ncol=1),num=n)
-
-vicons<-ceiling(n/hicons)
-
-allv<-sum(vicons)
-
-tail<-n%%hicons
-
-# dim[1] is the height, dim[2] the width:
-
-devaspect<-dev.size(units="px")[1]/dev.size(units="px")[2]
-
-xlength<-1
-
-# get dims of all elements of licon, find greatest aspect and set ylength
-
-getdim<-function(z) {
-
-aspect<-dim(z)[1]/dim(z)[2]
-
-return(aspect)
-
-}
-
-all.ylengths<-unlist(lapply(licon,getdim))
-
-ylength<-max(all.ylengths)
-
-all.ylengths<-untable(df=matrix(all.ylengths,ncol=1),num=n)
-
-ytop<-allv*ylength
-
-if(devaspect*hicons<allv) warning("icons="" may="" extend="" above="" the="" top="" of="" graph")="" #="" vector="" icons="" per="" row="" iconrow<-as.vector(as.matrix(rbind(rep(hicons,length(vicons)),tail)))="" for="" how="" many="" times="" to="" repeat="" elements="" iconrow="" reprow<-as.vector(as.matrix(rbind((vicons-1),rep(1,length(vicons)))))="" perrow<-untable(df="matrix(iconrow,ncol=1),num=reprow)" spacing<-null="" (i="" in="" 1:(length(n)))="" {="" spacing<-c(spacing,rep((i-1)*vspace*ylength,n[i]))="" }="" y0<-spacing+(ylength*untable(df="matrix((1:allv)-1,ncol=1),num=perrow))" y1<-y0+all.ylengths="" there="" are="" more="" elegant="" ways="" make="" x0,="" but="" now...="" x0<-null="" 1:(length(perrow)))="" x0<-c(x0,(0:(perrow[i]-1)))="" x1<-x0+xlength="" leftplot<-floor(-(labprop*hicons))="" plot(c(leftplot,hicons),c(0,(devaspect*hicons)),="" type="n" ,bty="n" ,ylab="" ,xlab="" ,xaxt="n" ,yaxt="n" )="" lines(x="c(0,0),y=c(min(y0)-(ylength/2),max(y1)+(ylength/2)))" 1:sumn)="" rasterimage(image="licon[[group[i]]],xleft=x0[i],xright=x1[i]," ytop="y1[i],ybottom=y0[i])" find="" positions="" labels="" ylabpos<-rep(na,length(n))="" 1:length(n))="" ylabpos[i]<-(max(y1[group="=i])+min(y0[group==i]))/2" text(x="leftplot/2,y=ylabpos,labels=grouplabels,cex=labelcex)" }<="" code=""></allv)>
-
+The source code
+```{r}
+istack2 = function(D, var, group = NULL, value = NULL, icon, size = 0.03, asp = 1, sort = TRUE) {
+  
+  # incase this is a tibble
+  D = data.frame(D)
+  
+  # giving nicknames
+  D['var'] = factor(D[[var]])
+  
+  if (!is.null(group)) {
+    D['group'] = factor(D[[group]])
+  }
+  
+  if (!is.null(value)) {
+    D['value'] = factor(D[[value]])
+  }
+  
+  # sort the levels of variable column
+  if (sort) {
+    D['var'] = factor(D[['var']], names(sort(table(D[['var']]), decreasing = FALSE)))
+  }
+  
+  # calculate coordinates
+  D = 
+    do.call(
+      rbind, 
+      lapply(
+        split(D, D['var']), 
+        function(df) {
+          if (!is.null(group)) {
+            df = df[order(df['group']),]
+          }
+          
+          if(!is.null(value)){
+            df = df[order(df['value']),]
+          }
+          
+          df['n'] = seq(nrow(df))
+          return(df)
+        }
+      )
+    )
+  
+  D['image'] = icon
+  
+  # create the plot
+  if (!is.null(group)) {
+    base = ggplot2::ggplot(data = D, aes(x = n, y = var, color = group)) + ggplot2::labs(color = group)
+  } 
+  
+  if (!is.null(value)){
+    base = ggplot2::ggplot(data = D, aes(x = var, y = value))
+  }
+  
+  else {
+    base = ggplot2::ggplot(data = D, aes(x = n, y = var)) 
+  }
+  
+  p = base + 
+    ggimage::geom_image(aes(image=image), asp = asp, size = size) +
+    ggplot2::theme(
+      plot.title = element_text(hjust = 0.5),
+      panel.background = element_blank(),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      axis.ticks = element_blank(),
+      axis.line = element_blank()
+    ) + 
+    ggplot2::ylab(var) +
+    ggplot2::xlab('') + 
+    ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(4), expand = c(0,0.6)) + 
+  geom_bar(stat = "identity")
+  
+  return(p)
 }
 ```
 
