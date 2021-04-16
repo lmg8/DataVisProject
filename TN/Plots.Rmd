@@ -9,7 +9,7 @@ output: html_document
 library(plotly)
 library(tidyverse)
 library(tidyr)
-table <- read.delim("/data/temperature.txt", header=FALSE)
+table <- read.delim("/Users/tony_niu/Desktop/University/STA313/STA313\ Final\ Project/Product/All\ codes/DataVisProject/TN/data/temperature.txt", header=FALSE)
 table <- data.frame(table)
 
 data <- 
@@ -22,7 +22,8 @@ data$Lowess = as.numeric((data$Lowess))
 
 head(data)
 
-fig <- plot_ly(data, x = ~Year, y = ~Lowess, type = 'scatter', mode = 'lines', showlegend=TRUE, color = I("#EF476F"))
+fig <- plot_ly(data, x = ~Year, y = ~Lowess, type = 'scatter', 
+               mode = 'lines', showlegend=TRUE, color = I("#EF476F"), width=700, height=595)
 fig <- fig %>% layout(title = list(text = paste0('... and global temperatures continue to rise',
                                     '<br>',
                                     '<sup>',
@@ -59,7 +60,7 @@ fig %>%
     add_annotations(text="Data source: NASA's Goddard Institute for Space Studies (GISS)", 
                     xref='paper',
                     yref='paper',
-                    x=1.05,y=-0.3,
+                    x=0.65,y=-0.22,
                     showarrow=FALSE, 
                     font = list(family = "arial", size = 14))
 
