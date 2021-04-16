@@ -79,7 +79,7 @@ a <- hchart(
   final2,
   "pie",
   hcaes(name = label, y = tweetInfo.n),
-  innerSize = 200
+  innerSize = "80%"
   )
 
 a<- a %>% 
@@ -98,7 +98,7 @@ a<- a %>%
       "function () {
         /* one of the most important parts! */
         xp =  this.chart.chartWidth-this.chart.chartWidth/2 - 70
-        yp =  this.chart.chartHeight-this.chart.chartHeight/2 - 30
+        yp =  this.chart.chartHeight-this.chart.chartHeight/2 - 25
       
         return { x: xp, y: yp };
       
@@ -112,7 +112,7 @@ a<- a %>%
     href = 'javascript:void(window.open("https://www.kaggle.com/edqian/twitter-climate-change-sentiment-dataset","_blank"))'
   )
 a
-#htmlwidgets::saveWidget(a,"figure1.html",selfcontained = FALSE)
+htmlwidgets::saveWidget(a,"figure1.html",selfcontained = FALSE)
 ```
 
 

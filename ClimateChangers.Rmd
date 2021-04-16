@@ -5,11 +5,11 @@ output:
   inclues: 
   in_header: header.html
 
-# knit: (function(input_file, encoding) {
-#   out_dir <- 'docs';
-#   rmarkdown::render(input_file,
-#  encoding=encoding,
-#  output_file=file.path(dirname(input_file), out_dir, 'index.html'))})
+knit: (function(input_file, encoding) {
+  out_dir <- 'docs';
+  rmarkdown::render(input_file,
+ encoding=encoding,
+ output_file=file.path(dirname(input_file), out_dir, 'index.html'))})
 ---
 
 <style type="text/css">
@@ -226,7 +226,7 @@ opts <- slickR::settings(slidesToShow =1,infinite = FALSE)
 
 </div>
 <div class="col-lg-4">
-<h1 class="section-title" style="font-size: 49px;">CURRENT SITUATION</h1>
+<h1 class="section-title" style="font-size: 42px;">CURRENT SITUATION</h1>
 <p>
 As a refresher, the definition of Climate change is "a long-term change in the average weather patterns that have come to define Earth’s local, regional and global climates" according to [NASA](https://climate.nasa.gov/resources/global-warming-vs-climate-change/). Global warming is a big part of climate change, and is caused by higher-than-normal amounts of greenhouse gases in the Earth's atmosphere.
 </p>
@@ -278,14 +278,20 @@ opts <- slickR::settings(slidesToShow =1,infinite = FALSE)
 
 (slickR::slickR(plot_obj,slideType = 'iframe', height=620, width=780) + opts)
 ```
+<img class="earth" style="max-width: 30%;" src="images/hug2.svg"> 
 
 </div>
 <div class="col-lg-4">
-<h1 class="section-title" style="font-size: 49px;">WHAT CAN WE DO?</h1>
+<h1 class="section-title" style="font-size: 56px;text-align: -webkit-right;">WHAT CAN WE DO?</h1>
 <p>
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+We saw in figure 2 that a lot of people think that citizens in their countries are not doing enough to fight climate change and in the Effects on Humans section that there will be disastrous consequences if climate change continues occurring at its current rate. But have no fear! There are actions that governments are taking and that you can do too to help reduce climate change.
 </p>
-<img class="earth" style="max-width: 95%;" src="images/hug2.svg"> 
+<p>
+Nearly 200 countries have signed onto the Paris Climate Agreement, a legally binding international accord whose goal is to limit global warming by countries committing to plans and actions to reduce their greenhouse gas emissions [(UN Climate Change)]( https://unfccc.int/process-and-meetings/the-paris-agreement/the-paris-agreement). Achieving its preferred goal of 1.5 degrees Celsius global warming would mean that hundreds of millions of people could be saved from having their homes flooded or destroyed by natural disasters, as well as reduce melting of the ice caps [(Natural Resources Defense Council)]( https://www.nrdc.org/stories/ipcc-climate-change-report-why-it-matters-everyone-planet#sec-conclude).
+</p>
+<p>
+Transportation is a major contributor to carbon dioxide emissions, particularly passenger cars. As companies seek low carbon energy alternatives such as in the development of electric cars, these emissions can be significantly decreased by 2070. In fact, on an individual level, some of the most impactful actions to reduce your carbon footprint are to live car free and take one less airplane flight per year. As mentioned in an article by the [BBC]( https://www.bbc.com/future/article/20181102-what-can-i-do-about-climate-change), the carbon dioxide emissions from a regular transatlantic round-trip flight is about equivalent to the average yearly emissions of a single person in India! Other actions you might want to consider are supporting the move to low carbon emission alternatives by purchasing green energy, and eating a plant-based diet and/or local-grown food.
+</p>
 </div>
 
 </div>
