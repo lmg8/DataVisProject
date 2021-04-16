@@ -290,7 +290,7 @@ opts <- slickR::settings(slidesToShow =1,infinite = FALSE)
 transport2020HTML<-paste0(readLines('transportation2020.html'),collapse='\n')
 transportPredictHTML<-paste0(readLines('transportationPredict.html'),collapse='\n')
 actionsHTML<-paste0(readLines('actionsPlot.html'),collapse='\n')
-plot_obj <- list(transport2020HTML,transportPredictHTML,actionsHTML)
+plot_obj <- list("images/PA.png",transport2020HTML,transportPredictHTML,actionsHTML)
 opts <- slickR::settings(slidesToShow =1,infinite = FALSE)
 
 (slickR::slickR(plot_obj,slideType = 'iframe', height=620, width=780) + opts)
