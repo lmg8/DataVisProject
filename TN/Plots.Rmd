@@ -69,26 +69,93 @@ fig %>%
 
 
 ```{r}
+library("readxl")
+
+cat <- read_excel("/data/CAT.xlsx")
+cat <- cat[-c(1, 2, 3, 4, 5, 6, 7), ]
+
+cat[1, 2] <- '0'
+
+years <- as.numeric(t(cat[1,-c(1, 2)]))
+
+ar5_high <- as.numeric(t(cat[2,-c(1, 2)]))
+ar5_low <- as.numeric(t(cat[3,-c(1, 2)]))
+ar5 <- data.frame("years" = years, "ar5_high" = as.numeric(ar5_high), "ar5_low" = as.numeric(ar5_low))
+ar5 <- drop_na(ar5)
+ar5$ar5_med <- rowMeans(ar5[,c("ar5_low", "ar5_high")])
+
+#The default order will be alphabetized unless specified as below:
+ar5$years <- factor(ar5$years, levels = ar5[["years"]])
+
+fig <- plot_ly(ar5, x = ~years, y = ~ar5_high, type = 'scatter', mode = 'lines',
+        line = list(color = 'rgba(0,100,80,1)'),
+        showlegend = FALSE, name = 'High ar5')
+fig <- fig %>% add_trace(y = ~ar5_low, type = 'scatter', mode = 'lines',
+            fill = 'tonexty', fillcolor='rgba(0,100,80,0.2)', line = list(color = 'rgba(0,100,80,1)'),
+            showlegend = FALSE, name = 'Low ar5')
+fig <- fig %>% layout(title = "High and Low ar5",
+         paper_bgcolor='rgb(255,255,255)', plot_bgcolor='rgb(229,229,229)',
+         xaxis = list(title = "Years",
+                      gridcolor = 'rgb(255,255,255)',
+                      showgrid = TRUE,
+                      showline = FALSE,
+                      showticklabels = TRUE,
+                      tickcolor = 'rgb(127,127,127)',
+                      ticks = 'outside',
+                      zeroline = FALSE),
+         yaxis = list(title = "AR5 Y AXIS",
+                      gridcolor = 'rgb(255,255,255)',
+                      showgrid = TRUE,
+                      showline = FALSE,
+                      showticklabels = TRUE,
+                      tickcolor = 'rgb(127,127,127)',
+                      ticks = 'outside',
+                      zeroline = FALSE))
+
+fig
+
+# the above approach worked
 
 
+# below is the data that's processed
+
+years <- as.numeric(t(cat[1,-c(1, 2)]))
+
+ar5_high <- as.numeric(t(cat[2,-c(1, 2)]))
+ar5_low <- as.numeric(t(cat[3,-c(1, 2)]))
+ar5 <- data.frame("years" = years, "ar5_high" = as.numeric(ar5_high), "ar5_low" = as.numeric(ar5_low))
+ar5 <- drop_na(ar5)
+
+#The default order will be alphabetized unless specified as below:
+ar5$years <- factor(ar5$years, levels = ar5[["years"]])
 
 
+current_high <- as.numeric(t(cat[4,-c(1, 2)]))
+current_low <- as.numeric(t(cat[5,-c(1, 2)]))
+current <- data.frame("years" = years, "current_high" = as.numeric(current_high), "current_low" = as.numeric(current_low))
+current <- drop_na(current)
+
+current$years <- factor(current$years, levels = current[["years"]])
 
 
+# haven't formatted the data below yet but it'll look the same as the ones above
+pledge_high <- as.numeric(t(cat[6,-c(1, 2)]))
+pledge_low <- as.numeric(t(cat[7,-c(1, 2)]))
+pledge <- data.frame(years, pledge_high, pledge_low)
 
+opt <- as.numeric(t(cat[8,-c(1, 2)]))
 
+c2_high <- as.numeric(t(cat[9,-c(1, 2)]))
+c2_med <- as.numeric(t(cat[10,-c(1, 2)]))
+c2_low <- as.numeric(t(cat[11,-c(1, 2)]))
+c2 <- data.frame(years, c2_high, c2_med, c2_low)
 
+c15_high <- as.numeric(t(cat[12,-c(1, 2)]))
+c15_med <- as.numeric(t(cat[13,-c(1, 2)]))
+c15_low <- as.numeric(t(cat[14,-c(1, 2)]))
+c15 <- data.frame(years, c15_high, c15_med, c15_low)
 
-
-
-
-
-
-
-
-
-
-
+historical <- as.numeric(t(cat[14,-c(1, 2)]))
 
 
 
@@ -96,12 +163,65 @@ fig %>%
 
 ```
 
-## Including Plots
+```{r}
+month <- c('January', 'February', 'March', 'April', 'May', 'June', 'July',
+           'August', 'September', 'October', 'November', 'December')
+high_2014 <- c(28.8, 28.5, 37.0, 56.8, 69.7, 79.7, 78.5, 77.8, 74.1, 62.6, 45.3, 39.9)
+low_2014 <- c(12.7, 14.3, 18.6, 35.5, 49.9, 58.0, 60.0, 58.6, 51.7, 45.2, 32.2, 29.1)
+data <- data.frame(month, high_2014, low_2014)
+data$average_2014 <- rowMeans(data[,c("high_2014", "low_2014")])
 
-You can also embed plots, for example:
+#The default order will be alphabetized unless specified as below:
+data$month <- factor(data$month, levels = data[["month"]])
 
-```{r pressure, echo=FALSE}
-plot(pressure)
+fig <- plot_ly(data, x = ~month, y = ~high_2014, type = 'scatter', mode = 'lines',
+        line = list(color = 'rgba(0,100,80,1)'),
+        showlegend = FALSE, name = 'High 2014')
+fig <- fig %>% add_trace(y = ~low_2014, type = 'scatter', mode = 'lines',
+            fill = 'tonexty', fillcolor='rgba(0,100,80,0.2)', line = list(color = 'rgba(0,100,80,1)'),
+            showlegend = FALSE, name = 'Low 2014')
+fig <- fig %>% layout(title = "High and Low Temperatures in New York",
+         paper_bgcolor='rgb(255,255,255)', plot_bgcolor='rgb(229,229,229)',
+         xaxis = list(title = "Months",
+                      gridcolor = 'rgb(255,255,255)',
+                      showgrid = TRUE,
+                      showline = FALSE,
+                      showticklabels = TRUE,
+                      tickcolor = 'rgb(127,127,127)',
+                      ticks = 'outside',
+                      zeroline = FALSE),
+         yaxis = list(title = "Temperature (degrees F)",
+                      gridcolor = 'rgb(255,255,255)',
+                      showgrid = TRUE,
+                      showline = FALSE,
+                      showticklabels = TRUE,
+                      tickcolor = 'rgb(127,127,127)',
+                      ticks = 'outside',
+                      zeroline = FALSE))
+
+fig
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+```{r}
+# did not work
+p <- ggplot(ar5, aes(x=years, y=ar5_med), color='blue')
+p + geom_path()
+p + geom_ribbon(aes(ymin = ar5_low, ymax = ar5_high),
+                fill = "steelblue") +
+  geom_path(size = 0.8)
+fig <- ggplotly(p)
+fig
+
+
+p <- ggplot(ar5) + geom_line(aes(y=ar5_med, x=years, colour = "sin")) +
+  geom_ribbon(aes(ymin=ar5_low, ymax=ar5_high, x=years, fill = "band"), alpha = 0.3) +
+  scale_colour_manual("",values="blue")+
+  scale_fill_manual("",values="blue")
+
+fig <- ggplotly()
+
+fig
+```
+
