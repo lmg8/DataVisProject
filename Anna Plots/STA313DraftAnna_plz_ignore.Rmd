@@ -1,0 +1,35 @@
+---
+title: "STA313_backupfile"
+author: "Anna Lai"
+date: "4/16/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## This is just a file Anna uses to store the code that mightbe useful
+For graph 9
+
+```{r}
+imageb <- readJPEG("cristian-palmer-XexawgzYOBc-unsplash.jpg")
+imageb
+
+res <-144
+man <- svglite("human-boy-person-man-svgrepo-com.svg", width = 10/res, height = 25/res)
+man
+```
+
+
+```{r}
+res <- 144
+man <- svglite("human-boy-person-man-svgrepo-com.svg", width = 10/res, height = 25/res)
+
+pictogram(icon=man,
+
+n=c(12,35,52),
+
+grouplabels=c("dudes","chaps","lads"))
+
+```
