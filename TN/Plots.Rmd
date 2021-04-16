@@ -1,0 +1,106 @@
+---
+title: "temperature"
+author: "Shengye (Tony) Niu"
+date: "14/04/2021"
+output: html_document
+---
+
+```{r}
+library(plotly)
+library(tidyverse)
+library(tidyr)
+table <- read.delim("/Users/tony_niu/Desktop/University/STA313/STA313\ Final\ Project/Product/All\ codes/DataVisProject/TN/data/temperature.txt", header=FALSE)
+table <- data.frame(table)
+
+data <- 
+  table %>% 
+  slice(5:length(table[,1])) %>% 
+  separate(V1, c("Year", "No_Smoothing", "Lowess"), sep="     ")
+
+data$No_Smoothing = as.numeric((data$No_Smoothing))
+data$Lowess = as.numeric((data$Lowess))
+
+head(data)
+
+fig <- plot_ly(data, x = ~Year, y = ~Lowess, type = 'scatter', mode = 'lines', showlegend=TRUE, color = I("#EF476F"))
+fig <- fig %>% layout(title = list(text = paste0('... and global temperatures continue to rise',
+                                    '<br>',
+                                    '<sup>',
+                                    'Global Land-Ocean Temperature Index',
+                                    '</sup>'), 
+                                   x = 0.1,
+                                   y = 0.9,
+                                   font = list(
+                                     family = "arial",
+                                     size = 20)),
+                      margin = list(l = 100,
+                                    r = 50,
+                                    b = 100,
+                                    t = 100,
+                                    pad = 20), 
+         paper_bgcolor="#d2d2d1", plot_bgcolor="#d2d2d1",
+         xaxis = list(title = "Year",
+                      gridcolor = "white",
+                      showgrid = TRUE,
+                      showline = FALSE,
+                      tickvals = list(1880, 1900, 1920, 1940, 1960, 1980, 2000, 2020),
+                      zeroline = FALSE,
+                      tickfont = list(family = "arial", size = 14),
+                      titlefont = list(family = "arial", size = 14)),
+         yaxis = list(title = "Temperature Anomaly (C)",
+                      gridcolor = "white",
+                      showgrid = TRUE,
+                      showline = FALSE,
+                      zeroline = FALSE,
+                      tickfont = list(family = "arial", size = 14),
+                      titlefont = list(family = "arial", size = 14))) 
+
+fig %>% 
+    add_annotations(text="Data source: NASA's Goddard Institute for Space Studies (GISS)", 
+                    xref='paper',
+                    yref='paper',
+                    x=1.05,y=-0.3,
+                    showarrow=FALSE, 
+                    font = list(family = "arial", size = 14))
+
+```
+
+
+
+```{r}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
