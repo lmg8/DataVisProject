@@ -9,7 +9,7 @@ output: html_document
 library(plotly)
 library(tidyverse)
 library(tidyr)
-table <- read.delim("/Users/tony_niu/Desktop/University/STA313/STA313\ Final\ Project/Product/All\ codes/DataVisProject/TN/data/temperature.txt", header=FALSE)
+table <- read.delim("/data/temperature.txt", header=FALSE)
 table <- data.frame(table)
 
 data <- 
