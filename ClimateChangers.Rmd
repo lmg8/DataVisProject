@@ -214,6 +214,11 @@ opts <- slickR::settings(slidesToShow =2,slidesToScroll=2,infinite = FALSE,adapt
 
 
 <div class="container main-container" style="padding:50px;background-color:#d2d2d1;margin:50px 0px">
+<div class="col-lg-6">
+</div>
+<div class="col-lg-6">
+<h1 class="section-title" style="font-size: 50px;text-align: -webkit-right;">CURRENT SITUATION</h1>
+</div>
 <div class="col-lg-8">
 ```{r}
 iceMassHtml<-paste0(readLines('icemass.html'),collapse='\n')
@@ -221,12 +226,11 @@ electricity<-"<div class='tableauPlaceholder' id='viz1618542481387' style='posit
 plot_obj <- list("images/emissions.png","images/temperature.png",iceMassHtml,electricity)
 opts <- slickR::settings(slidesToShow =1,infinite = FALSE)
 
-(slickR::slickR(plot_obj,slideType = 'iframe', height=620, width=780) + opts)
+(slickR::slickR(plot_obj,slideType = 'iframe', height=620, width=767) + opts)
 ```
 
 </div>
 <div class="col-lg-4">
-<h1 class="section-title" style="font-size: 42px;">CURRENT SITUATION</h1>
 <p>
 As a refresher, the definition of Climate change is "a long-term change in the average weather patterns that have come to define Earth’s local, regional and global climates" according to [NASA](https://climate.nasa.gov/resources/global-warming-vs-climate-change/). Global warming is a big part of climate change, and is caused by higher-than-normal amounts of greenhouse gases in the Earth's atmosphere.
 </p>
@@ -246,8 +250,15 @@ With increasing temperatures, the summers are increasingly hot and we use more e
 
 
 <div class="container main-container bg-blue" style="padding:50px;margin:50px 0px">
+<div class="row">
+<div class="col-lg-6">
+<h1 class="section-title" style="font-size: 50px;">EFFECTS ON HUMANS</h1>
+</div>
+<div class="col-lg-6">
+</div>
+</div>
+<div class="row">
 <div class="col-lg-4">
-<h1 class="section-title" style="font-size: 49px;">EFFECTS ON HUMANS</h1>
 <p>
 <img class="earth" style="max-width: 27%;float: right;margin-left: 5px;" src="images/exhausted.svg"> 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
@@ -262,12 +273,18 @@ opts <- slickR::settings(slidesToShow =1,infinite = FALSE)
 (slickR::slickR(plot_obj,slideType = 'iframe', height=610) + opts)
 ```
 </div>
-
+</div>
 </div>
 
 
 
 <div class="container main-container" style="padding:50px;background-color:#d2d2d1;">
+
+<div class="col-lg-6">
+</div>
+<div class="col-lg-6">
+<h1 class="section-title" style="font-size: 50px;text-align: -webkit-right;">WHAT CAN WE DO?</h1>
+</div>
 <div class="col-lg-8">
 ```{r}
 transport2020HTML<-paste0(readLines('transportation2020.html'),collapse='\n')
@@ -278,11 +295,9 @@ opts <- slickR::settings(slidesToShow =1,infinite = FALSE)
 
 (slickR::slickR(plot_obj,slideType = 'iframe', height=620, width=780) + opts)
 ```
-<img class="earth" style="max-width: 30%;" src="images/hug2.svg"> 
 
 </div>
 <div class="col-lg-4">
-<h1 class="section-title" style="font-size: 56px;text-align: -webkit-right;">WHAT CAN WE DO?</h1>
 <p>
 We saw in figure 2 that a lot of people think that citizens in their countries are not doing enough to fight climate change and in the Effects on Humans section that there will be disastrous consequences if climate change continues occurring at its current rate. But have no fear! There are actions that governments are taking and that you can do too to help reduce climate change.
 </p>
@@ -296,9 +311,12 @@ Transportation is a major contributor to carbon dioxide emissions, particularly 
 
 </div>
 
-<div class="col-lg-12">
+<div class="col-lg-5">
 <h3 id="intro" style="color:#7acdf1;margin-bottom: 50px;">
 "THE EARTH IS OUR HOME. LET'S TAKE CARE OF IT."
 <h3>
+</div>
+<div class="col-lg-7">
+<img class="earth" style="max-width: 30%;" src="images/hug2.svg"> 
 </div>
 </div>
