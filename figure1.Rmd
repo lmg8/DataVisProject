@@ -79,7 +79,7 @@ a <- hchart(
   final2,
   "pie",
   hcaes(name = label, y = tweetInfo.n),
-  innerSize = 250
+  innerSize = 200
   )
 
 a<- a %>% 
@@ -97,7 +97,7 @@ a<- a %>%
     positioner = JS(
       "function () {
         /* one of the most important parts! */
-        xp =  this.chart.chartWidth-this.chart.chartWidth/2 - 90
+        xp =  this.chart.chartWidth-this.chart.chartWidth/2 - 70
         yp =  this.chart.chartHeight-this.chart.chartHeight/2 - 30
       
         return { x: xp, y: yp };
@@ -112,7 +112,7 @@ a<- a %>%
     href = 'javascript:void(window.open("https://www.kaggle.com/edqian/twitter-climate-change-sentiment-dataset","_blank"))'
   )
 a
-htmlwidgets::saveWidget(a,"figure1.html",selfcontained = FALSE)
+#htmlwidgets::saveWidget(a,"figure1.html",selfcontained = FALSE)
 ```
 
 
@@ -235,34 +235,5 @@ bar_pro<- hchart(
 bar_pro
 ```
 
-```{r}
 
-library(tidyverse)
-library(highcharter)
-library(RColorBrewer)
-
-
-tweetInfo %>%
-  hctreemap2(
-    x="label",
-    group_vars = c("type"),
-    size_var = "n",
-    layoutAlgorithm = "squarified",
-    levelIsConstant = TRUE,
-    levels = list(
-      list(level = 1, dataLabels = list(enabled = TRUE)),
-      list(level = 2, dataLabels = list(enabled = FALSE))
-    )
-  ) %>%
-  hc_colorAxis(
-    minColor = brewer.pal(7, "YlOrRd")[1],
-    maxColor = brewer.pal(7, "YlGnBu")[4]
-  ) %>%
-  hc_tooltip(pointFormat = "<b>{point.y}</b>:<br>
-             Value: {point.value:,.0f}<br>
-             Color Value: {point.colorValue:,.0f}")
-
-
-
-```
 

@@ -20,7 +20,7 @@ output:
 
 h1.page-title {
   font-family: 'Raleway', sans-serif;
-  font-size: 118px;
+  font-size: 92px;
   color: #7acdf1;
   font-style: normal;
   font-variant: normal;
@@ -60,16 +60,16 @@ img.earth{
 #intro{
     font-family: 'Poppins', sans-serif;
     text-align: left;
-    font-size: 23px;
+    font-size: 19px;
     color: white;
-    max-width: 1113px;
+    max-width: 850px;
     line-height: 1.4;
    margin-top: 30px;
 
 }
 
 .main-container {
-    max-width: 1950px;
+    max-width: 1368px;
     width: 100%;
     margin: 0 auto;
     background-color: #1b3c65;
@@ -90,6 +90,8 @@ iframe{
   background-color: transparent;
   border-color:transparent;
   max-width:850px;
+  width:100%;
+  height:610px;
 }
 
 .slick-slide {
@@ -214,10 +216,12 @@ opts <- slickR::settings(slidesToShow =2,slidesToScroll=2,infinite = FALSE,adapt
 <div class="container main-container" style="padding:50px;background-color:#d2d2d1;margin:50px 0px">
 <div class="col-lg-8">
 ```{r}
-plot_obj <- list('images/emissions.png','images/temperature.png')
+iceMassHtml<-paste0(readLines('icemass.html'),collapse='\n')
+electricity<-"<div class='tableauPlaceholder' id='viz1618542481387' style='position: relative'><noscript><a href='#'><img alt='Carbon emissions by household electricity usage have increased over time ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;El&#47;Electricityusage_16185424013270&#47;Sheet1&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='Electricityusage_16185424013270&#47;Sheet1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;El&#47;Electricityusage_16185424013270&#47;Sheet1&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1618542481387');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='750px';vizElement.style.height='585px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>"
+plot_obj <- list("images/emissions.png","images/temperature.png",iceMassHtml,electricity)
 opts <- slickR::settings(slidesToShow =1,infinite = FALSE)
 
-(slickR::slickR(plot_obj,slideType = 'iframe', height=600) + opts)
+(slickR::slickR(plot_obj,slideType = 'iframe', height=620, width=780) + opts)
 ```
 
 </div>
@@ -252,10 +256,10 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 <div class="col-lg-8">
 ```{r}
-plot_obj <- list(natural_disaster)
+plot_obj <- list(natural_disaster,'<img class="shrinkToFit" src="images/under_the_sea2.png"  style="max-width: 95%;height: 98.3%;" width="714" height="582">')
 opts <- slickR::settings(slidesToShow =1,infinite = FALSE)
 
-(slickR::slickR(plot_obj,slideType = 'iframe', height=600) + opts)
+(slickR::slickR(plot_obj,slideType = 'iframe', height=610) + opts)
 ```
 </div>
 
@@ -272,7 +276,7 @@ actionsHTML<-paste0(readLines('actionsPlot.html'),collapse='\n')
 plot_obj <- list(transport2020HTML,transportPredictHTML,actionsHTML)
 opts <- slickR::settings(slidesToShow =1,infinite = FALSE)
 
-(slickR::slickR(plot_obj,slideType = 'iframe', height=600) + opts)
+(slickR::slickR(plot_obj,slideType = 'iframe', height=620, width=780) + opts)
 ```
 
 </div>
