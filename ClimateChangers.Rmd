@@ -204,8 +204,9 @@ publicOpinionHtml2<-paste0(readLines('PublicOpinion2.html'),collapse='\n')
 plot_obj <- list(publicOpinionHtml,figure1html,publicOpinionHtml2,figure2html)
 
 opts <- slickR::settings(slidesToShow =2,slidesToScroll=2,infinite = FALSE,adaptiveHeight = T)
-
-(slickR::slickR(plot_obj,slideType = 'iframe', height=600) + opts) 
+figureNames<-c("","Figure 1","","Figure 2")
+(slickR::slickR(plot_obj,slideType = 'iframe', height=600) + opts) %synch%
+( slickR(figureNames, slideType = 'p',height=20) + settings(arrows = FALSE,slidesToShow =2,slidesToScroll=2,infinite = FALSE) )
 ```
 </div>
 
@@ -216,32 +217,32 @@ opts <- slickR::settings(slidesToShow =2,slidesToScroll=2,infinite = FALSE,adapt
 <div class="container main-container" style="padding:50px;background-color:#d2d2d1;margin:50px 0px">
 <div class="col-lg-6">
 </div>
-<div class="col-lg-6">
+<div class="col-lg-6" style="text-align: right;">
 <h1 class="section-title" style="font-size: 50px;text-align: -webkit-right;">CURRENT SITUATION</h1>
 </div>
 <div class="col-lg-8">
 ```{r}
 iceMassHtml<-paste0(readLines('icemass.html'),collapse='\n')
-electricity<-"<div class='tableauPlaceholder' id='viz1618542481387' style='position: relative'><noscript><a href='#'><img alt='Carbon emissions by household electricity usage have increased over time ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;El&#47;Electricityusage_16185424013270&#47;Sheet1&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='Electricityusage_16185424013270&#47;Sheet1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;El&#47;Electricityusage_16185424013270&#47;Sheet1&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1618542481387');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='750px';vizElement.style.height='585px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>"
+electricity<-"<div class='tableauPlaceholder' id='viz1618625608115' style='position: relative'><noscript><a href='#'><img alt='Carbon emissions by household electricity usage have increased over time ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Ca&#47;Carbonemissionsbyhouseholdelectricityusagehaveincreasedovertime&#47;Sheet1&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='Carbonemissionsbyhouseholdelectricityusagehaveincreasedovertime&#47;Sheet1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;Ca&#47;Carbonemissionsbyhouseholdelectricityusagehaveincreasedovertime&#47;Sheet1&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1618625608115');                    var vizElement = divElement.getElementsByTagName('object')[0];                    vizElement.style.width='750px';vizElement.style.height='585px';                    var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>"
+
+figureNames<-c("Figure 3","Figure 4","Figure 5","Figure 6")
 plot_obj <- list("images/emissions.png","images/temperature.png",iceMassHtml,electricity)
 opts <- slickR::settings(slidesToShow =1,infinite = FALSE)
 
-(slickR::slickR(plot_obj,slideType = 'iframe', height=620, width=767) + opts)
+(slickR::slickR(plot_obj,slideType = 'iframe', height=620, width=767) + opts) %synch%
+( slickR(figureNames, slideType = 'p',height=20) + settings(arrows = FALSE,slidesToShow =1,infinite = FALSE) )
 ```
 
 </div>
 <div class="col-lg-4">
 <p>
-As a refresher, the definition of Climate change is "a long-term change in the average weather patterns that have come to define Earth’s local, regional and global climates" according to [NASA](https://climate.nasa.gov/resources/global-warming-vs-climate-change/). Global warming is a big part of climate change, and is caused by higher-than-normal amounts of greenhouse gases in the Earth's atmosphere.
-</p>
-
-<p>
 <img class="earth" style="max-width: 27%;float: right;margin-left: 5px;" src="images/pained.svg"> 
-In the past 30 years, world greenhouse gas emissions have increased by nearly 45% at a rate higher than ever before. In fact, according to [NASA](https://climate.nasa.gov), carbon dioxide, the largest contributor, is at its highest concentration in the air in 650,000 years! These high levels of Carbon dioxide come mainly from human activities (such as burning of fossil fuels, deforestation and livestock farming) and thus fuel the global warming crisis leading to drastic climate changes across the globe such as increasing temperatures and melting ice caps. [Insert interesting insights from temperature and ice mass graphs]
+Global warming is a big part of climate change, and is caused by the presence of greenhouse gases in the Earth's atmosphere. In the past 30 years, world greenhouse gas emissions have increased by nearly 45% at a rate higher than ever before. In fact, according to [NASA](https://climate.nasa.gov), carbon dioxide, the largest contributor, is at its highest concentration in the air in 650,000 years! These high levels of carbon dioxide come mainly from human activities (such as burning of fossil fuels, deforestation and livestock farming) and thus fuel the global warming crisis leading to drastic climate changes across the globe such as increasing temperatures and melting ice caps. In the graph of temperature, the change in global surface temperature is relative to 1951-1980 average temperatures. We can see the dramatic increase in temperature in the last 40 years and how today the global temperature is about 1.2 degrees Celsius higher than 100 years ago! In the ice melting graph, thousands of gigatonnes of ice are being lost each year and although [it is unlikely for us to see all the earth’s ice to melt in our lifetimes](https://www.discovermagazine.com/environment/the-ice-caps-are-melting-will-they-ever-disappear-completely), the effects such as rising sea levels may still cause us devastating consequences, as we’ll talk about in the next section.
 </p>
 
 <p>
-With increasing temperatures, the summers are increasingly hot and we use more electricity through fans and air conditioning to keep cool. However, this in turn also releases more carbon emissions into the atmosphere further contributing to global warming and perpetuating this vicious cycle of climate change.
+
+With increasing temperatures, the summers are increasingly hot and we use more electricity through fans and air conditioning to keep cool. However since more than [50% of the world’s electricity is generated by fossil fuels](https://www.world-nuclear.org/nuclear-essentials/where-does-our-electricity-come-from.aspx), this in turn also releases more carbon emissions into the atmosphere further contributing to global warming and perpetuating this vicious cycle of climate change.
 </p>
 </div>
 
@@ -261,7 +262,10 @@ With increasing temperatures, the summers are increasingly hot and we use more e
 <div class="col-lg-4">
 <p>
 <img class="earth" style="max-width: 27%;float: right;margin-left: 5px;" src="images/exhausted.svg"> 
-Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+The effects of climate change might seem out of reach. It is easy to think that this issue is not our concern. Yet, as humans we have already been paying the debts. From figure 7, we observed an increased total number of all natural disasters. Notably, flood, shown in green, has doubled in occurrence since 2000 and storms, shown in blue, have gradually doubled from 1980 to 2000. This could possibly be due to an increase in sea level due to melting of ice as discussed in the previous section. This has a direct correlation to an estimated 3.84% of the world population who used to live on land and will have to flee from their home! From graph 9, we can see low-lying countries in different continents such as Marshall Island, Maldives, Vietnam, etc. would have the largest proportion of its civilians affected by flooding. Countries will have to find new lands for them, and the people will need to build new homes in the near future. The effect of climate change on humans is real.
+</p>
+<p>
+As a matter of fact, climate change not only affects humans, it is also affecting 19% of species listed as threatened on the IUCN Red List of Threatened Species™, increasing the likelihood of their extinction. Many species have already gone extinct, coral reefs, which form one of the most biodiverse ecosystems, are among the most rapidly declining species groups due to rising ocean temperatures.The next time one goes scuba diving, there might not be as beautiful a scene as it used to be undersea. Climate change has also [advanced the flowering date for many temperature sensitive flower species](https://www.sciencedirect.com/science/article/abs/pii/S016819230600116X?via%3Dihub) such as P. davidina. If the global temperature continues to rise at an unprecedented speed, flower species which could not catch up with it might go extinct. While it means we can go hanami (a traditional Japanese culture of watching cherry blossoms with loved ones in Spring), who knows if what happened to coral reefs can also happen to temperature sensitive flowers we enjoy watching in Spring?
 </p>
 </div>
 
@@ -270,7 +274,11 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 plot_obj <- list(natural_disaster,'<img class="shrinkToFit" src="images/under_the_sea2.png"  style="max-width: 95%;height: 98.3%;" width="714" height="582">')
 opts <- slickR::settings(slidesToShow =1,infinite = FALSE)
 
-(slickR::slickR(plot_obj,slideType = 'iframe', height=610) + opts)
+figureNames<-c("Figure 7","Figure 8")
+
+(slickR::slickR(plot_obj,slideType = 'iframe', height=610) + opts)%synch%
+( slickR(figureNames, slideType = 'p',height=20) + settings(arrows = FALSE,slidesToShow =1,infinite = FALSE) )
+
 ```
 </div>
 </div>
@@ -282,24 +290,26 @@ opts <- slickR::settings(slidesToShow =1,infinite = FALSE)
 
 <div class="col-lg-6">
 </div>
-<div class="col-lg-6">
+<div class="col-lg-6" style="text-align: right;">
 <h1 class="section-title" style="font-size: 50px;text-align: -webkit-right;">WHAT CAN WE DO?</h1>
 </div>
 <div class="col-lg-8">
 ```{r}
+figureNames<-c("Figure 10","Figure 11.1", "Figure 11.2" ,"Figure 12")
 transport2020HTML<-paste0(readLines('transportation2020.html'),collapse='\n')
 transportPredictHTML<-paste0(readLines('transportationPredict.html'),collapse='\n')
 actionsHTML<-paste0(readLines('actionsPlot.html'),collapse='\n')
 plot_obj <- list("images/PA.png",transport2020HTML,transportPredictHTML,actionsHTML)
 opts <- slickR::settings(slidesToShow =1,infinite = FALSE)
 
-(slickR::slickR(plot_obj,slideType = 'iframe', height=620, width=780) + opts)
+(slickR::slickR(plot_obj,slideType = 'iframe', height=620, width=780) + opts)%synch%
+( slickR(figureNames, slideType = 'p',height=20) + settings(arrows = FALSE,slidesToShow =1,infinite = FALSE) )
 ```
 
 </div>
 <div class="col-lg-4">
 <p>
-We saw in figure 2 that a lot of people think that citizens in their countries are not doing enough to fight climate change and in the Effects on Humans section that there will be disastrous consequences if climate change continues occurring at its current rate. But have no fear! There are actions that governments are taking and that you can do too to help reduce climate change.
+We saw in figure 2 that a lot of people think that citizens in their countries are not doing enough to fight climate change and in the Effects on Humans section that there will be disastrous consequences if climate change continues to occur at its current rate. But have no fear! There are actions that governments are taking and that you too can do to help reduce climate change.
 </p>
 <p>
 Nearly 200 countries have signed onto the Paris Climate Agreement, a legally binding international accord whose goal is to limit global warming by countries committing to plans and actions to reduce their greenhouse gas emissions [(UN Climate Change)]( https://unfccc.int/process-and-meetings/the-paris-agreement/the-paris-agreement). Achieving its preferred goal of 1.5 degrees Celsius global warming would mean that hundreds of millions of people could be saved from having their homes flooded or destroyed by natural disasters, as well as reduce melting of the ice caps [(Natural Resources Defense Council)]( https://www.nrdc.org/stories/ipcc-climate-change-report-why-it-matters-everyone-planet#sec-conclude).
@@ -312,9 +322,14 @@ Transportation is a major contributor to carbon dioxide emissions, particularly 
 </div>
 
 <div class="col-lg-5">
-<h3 id="intro" style="color:#7acdf1;margin-bottom: 50px;">
+<h3 id="intro" style="color:#7acdf1;margin-top:80px;">
 "THE EARTH IS OUR HOME. LET'S TAKE CARE OF IT."
-<h3>
+</h3>
+ <br>
+<p style="color:#7acdf1;font-size: 10px;">
+To calculate your carbon footprint, you can go to [https://www.terrapass.com/](https://www.terrapass.com/)
+</p>
+
 </div>
 <div class="col-lg-7">
 <img class="earth" style="max-width: 30%;" src="images/hug2.svg"> 
