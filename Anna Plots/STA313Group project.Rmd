@@ -137,29 +137,6 @@ affected
 ```
 
 
-
-```{r}
-library(istack)
-library(ggplot2)
-
-g9 <- read.xlsx("Graph_9_Population_affected_by_landloss.xlsx",1) %>%
-filter(Percentage.difference < 0)
-
-
-set.seed(2018-12-09)
-cancers = simulate_cancers(15)
-
-p = istack2(g9, 
-           var = "Place",
-           value = "Percentage decrease3",
-           icon = "https://upload.wikimedia.org/wikipedia/commons/d/d8/Person_icon_BLACK-01.svg",
-           size = 0.03,
-           asp = 9)
-
-p + theme(panel.grid.major.x = element_line(colour = "grey", linetype = 'dashed')) +
-  ggtitle('Living under sea level')
-```
-
 Desired table print
 ```{r}
 cancers
@@ -167,6 +144,7 @@ cancers
 
 The source code
 ```{r}
+img <- readJPEG('./cristian-palmer-XexawgzYOBc-unsplash.jpg')
 istack2 = function(D, var, group = NULL, value = NULL, icon, size = 0.03, asp = 1, sort = TRUE) {
   
   # incase this is a tibble
@@ -217,7 +195,7 @@ istack2 = function(D, var, group = NULL, value = NULL, icon, size = 0.03, asp = 
   } 
   
   if (!is.null(value)){
-    base = ggplot2::ggplot(data = D, aes(x = var, y = value))
+    base = ggplot2::ggplot(data = D, aes(x = as.numeric(var), y = sort((0 - as.numeric(value)), FALSE), colour = "#e5e5e5" )) + ggplot2::labs(color = value)
   }
   
   else {
@@ -228,14 +206,14 @@ istack2 = function(D, var, group = NULL, value = NULL, icon, size = 0.03, asp = 
     ggimage::geom_image(aes(image=image), asp = asp, size = size) +
     ggplot2::theme(
       plot.title = element_text(hjust = 0.5),
-      panel.background = element_blank(),
+      panel.background = element_rect(fill = "#4cc9f0",),
       panel.grid.major = element_blank(),
       panel.grid.minor = element_blank(),
       axis.ticks = element_blank(),
       axis.line = element_blank()
     ) + 
-    ggplot2::ylab(var) +
-    ggplot2::xlab('') + 
+    ggplot2::ylab('Percentage (100 as full)') +
+    ggplot2::xlab('Country name') + 
     ggplot2::scale_x_continuous(breaks = scales::pretty_breaks(4), expand = c(0,0.6)) + 
   geom_bar(stat = "identity")
   
@@ -243,3 +221,24 @@ istack2 = function(D, var, group = NULL, value = NULL, icon, size = 0.03, asp = 
 }
 ```
 
+```{r}
+library(istack)
+library(ggplot2)
+
+g9 <- read.xlsx("Graph_9.xlsx", 1) %>%
+filter(Percentage < 0)
+
+
+set.seed(2018-12-09)
+cancers = simulate_cancers(15)
+
+p = istack2(g9, 
+           var = "Place",
+           value = "Percentage",
+           icon = "https://upload.wikimedia.org/wikipedia/commons/d/d8/Person_icon_BLACK-01.svg",
+           size = 0.03,
+           asp = 1.3)
+
+p + theme(panel.grid.major.x = element_line(colour = "#1d3557", linetype = 'dashed')) +
+  ggtitle('Percentage of total population whose home will be flooded in 2050')
+```
