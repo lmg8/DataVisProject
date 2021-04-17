@@ -151,7 +151,7 @@ cancers = simulate_cancers(15)
 
 p = istack2(g9, 
            var = "Place",
-           value = "Percentage decrease",
+           value = "Percentage decrease3",
            icon = "https://upload.wikimedia.org/wikipedia/commons/d/d8/Person_icon_BLACK-01.svg",
            size = 0.03,
            asp = 9)
