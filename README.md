@@ -1,4 +1,4 @@
-# DataVisProject STA313 Data visualization Assignment
+# Data Visualization Assignment
 
 Team Climage Changer
 
